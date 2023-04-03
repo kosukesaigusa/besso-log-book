@@ -1,0 +1,13 @@
+{
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  "dart.lineLength": 80,
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "dart.runPubGetOnPubspecChanges": "never",
+  "cSpell.words": ["besso"]
+}
