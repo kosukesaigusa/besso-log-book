@@ -9,5 +9,5 @@
     "**/.fvm": true
   },
   "dart.runPubGetOnPubspecChanges": "never",
-  "cSpell.words": ["besso"]
+  "cSpell.words": ["besso", "bools", "combinators"]
 }
