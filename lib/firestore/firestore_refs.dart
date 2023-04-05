@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-import 'visitor_log/visitor_log.dart';
+import 'firestore_models/visitor_log.dart';
 
 final _db = FirebaseFirestore.instance;
 
