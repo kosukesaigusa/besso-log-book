@@ -9,9 +9,9 @@
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
 import 'package:auto_route/auto_route.dart' as _i4;
-import 'package:besso_log_book/visitor_log/ui/visitor_log_create.dart' as _i3;
+import 'package:besso_log_book/visitor_log/ui/visitor_log_create.dart' as _i2;
 import 'package:besso_log_book/visitor_log/ui/visitor_log_detail.dart' as _i1;
-import 'package:besso_log_book/visitor_log/ui/visitor_logs.dart' as _i2;
+import 'package:besso_log_book/visitor_log/ui/visitor_logs.dart' as _i3;
 import 'package:flutter/material.dart' as _i5;
 
 abstract class $AppRouter extends _i4.RootStackRouter {
@@ -33,16 +33,16 @@ abstract class $AppRouter extends _i4.RootStackRouter {
         ),
       );
     },
-    VisitorLogsRoute.name: (routeData) {
-      return _i4.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i2.VisitorLogsPage(),
-      );
-    },
     VisitorLogCreateRoute.name: (routeData) {
       return _i4.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const _i3.VisitorLogCreatePage(),
+        child: const _i2.VisitorLogCreatePage(),
+      );
+    },
+    VisitorLogsRoute.name: (routeData) {
+      return _i4.AutoRoutePage<dynamic>(
+        routeData: routeData,
+        child: const _i3.VisitorLogsPage(),
       );
     },
   };
@@ -89,21 +89,7 @@ class VisitorLogDetailRouteArgs {
 }
 
 /// generated route for
-/// [_i2.VisitorLogsPage]
-class VisitorLogsRoute extends _i4.PageRouteInfo<void> {
-  const VisitorLogsRoute({List<_i4.PageRouteInfo>? children})
-      : super(
-          VisitorLogsRoute.name,
-          initialChildren: children,
-        );
-
-  static const String name = 'VisitorLogsRoute';
-
-  static const _i4.PageInfo<void> page = _i4.PageInfo<void>(name);
-}
-
-/// generated route for
-/// [_i3.VisitorLogCreatePage]
+/// [_i2.VisitorLogCreatePage]
 class VisitorLogCreateRoute extends _i4.PageRouteInfo<void> {
   const VisitorLogCreateRoute({List<_i4.PageRouteInfo>? children})
       : super(
@@ -112,6 +98,20 @@ class VisitorLogCreateRoute extends _i4.PageRouteInfo<void> {
         );
 
   static const String name = 'VisitorLogCreateRoute';
+
+  static const _i4.PageInfo<void> page = _i4.PageInfo<void>(name);
+}
+
+/// generated route for
+/// [_i3.VisitorLogsPage]
+class VisitorLogsRoute extends _i4.PageRouteInfo<void> {
+  const VisitorLogsRoute({List<_i4.PageRouteInfo>? children})
+      : super(
+          VisitorLogsRoute.name,
+          initialChildren: children,
+        );
+
+  static const String name = 'VisitorLogsRoute';
 
   static const _i4.PageInfo<void> page = _i4.PageInfo<void>(name);
 }
