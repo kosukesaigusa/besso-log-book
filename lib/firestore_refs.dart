@@ -16,5 +16,5 @@ final visitorLogsRef = _db.collection('visitorLogs').withConverter(
 );
 
 /// visitorLog ドキュメントの参照。
-DocumentReference<VisitorLog> appUserRef({required String visitorLogId}) =>
+DocumentReference<VisitorLog> visitorLogRef({required String visitorLogId}) =>
     visitorLogsRef.doc(visitorLogId);
