@@ -9,6 +9,7 @@ import 'router.gr.dart';
 class AppRouter extends $AppRouter {
   @override
   final List<AutoRoute> routes = [
+    RedirectRoute(path: '/', redirectTo: VisitorLogsPage.path),
     AutoRoute(
       path: VisitorLogsPage.path,
       page: VisitorLogsRoute.page,

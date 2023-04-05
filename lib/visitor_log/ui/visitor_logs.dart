@@ -14,11 +14,12 @@ class VisitorLogsPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
               onPressed: () => context.router
                   .push(VisitorLogDetailRoute(visitorLogId: 'abc')),
-              child: const Text('To visitorLogs/abc'),
+              child: const Text('Go to visitorLogs/abc'),
             ),
           ],
         ),

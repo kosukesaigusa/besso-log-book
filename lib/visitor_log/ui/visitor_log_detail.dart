@@ -17,6 +17,7 @@ class VisitorLogDetailPage extends StatelessWidget {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text('visitorLogId: $visitorLogId'),
           ],
