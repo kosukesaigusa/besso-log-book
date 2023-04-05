@@ -45,3 +45,6 @@ app.*.map.json
 
 # FVM related
 .fvm/flutter_sdk
+
+# Firebase related
+.firebase
