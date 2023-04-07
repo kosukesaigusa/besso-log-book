@@ -20,6 +20,7 @@ VisitorLog _$VisitorLogFromJson(Map<String, dynamic> json) {
 
 /// @nodoc
 mixin _$VisitorLog {
+  String get visitorLogId => throw _privateConstructorUsedError;
   String get visitorName => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
@@ -39,7 +40,8 @@ abstract class $VisitorLogCopyWith<$Res> {
       _$VisitorLogCopyWithImpl<$Res, VisitorLog>;
   @useResult
   $Res call(
-      {String visitorName,
+      {String visitorLogId,
+      String visitorName,
       String description,
       String imageUrl,
       @alwaysUseServerTimestampUnionTimestampConverter
@@ -61,12 +63,17 @@ class _$VisitorLogCopyWithImpl<$Res, $Val extends VisitorLog>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? visitorLogId = null,
     Object? visitorName = null,
     Object? description = null,
     Object? imageUrl = null,
     Object? createdAt = null,
   }) {
     return _then(_value.copyWith(
+      visitorLogId: null == visitorLogId
+          ? _value.visitorLogId
+          : visitorLogId // ignore: cast_nullable_to_non_nullable
+              as String,
       visitorName: null == visitorName
           ? _value.visitorName
           : visitorName // ignore: cast_nullable_to_non_nullable
@@ -104,7 +111,8 @@ abstract class _$$_VisitorLogCopyWith<$Res>
   @override
   @useResult
   $Res call(
-      {String visitorName,
+      {String visitorLogId,
+      String visitorName,
       String description,
       String imageUrl,
       @alwaysUseServerTimestampUnionTimestampConverter
@@ -125,12 +133,17 @@ class __$$_VisitorLogCopyWithImpl<$Res>
   @pragma('vm:prefer-inline')
   @override
   $Res call({
+    Object? visitorLogId = null,
     Object? visitorName = null,
     Object? description = null,
     Object? imageUrl = null,
     Object? createdAt = null,
   }) {
     return _then(_$_VisitorLog(
+      visitorLogId: null == visitorLogId
+          ? _value.visitorLogId
+          : visitorLogId // ignore: cast_nullable_to_non_nullable
+              as String,
       visitorName: null == visitorName
           ? _value.visitorName
           : visitorName // ignore: cast_nullable_to_non_nullable
@@ -155,7 +168,8 @@ class __$$_VisitorLogCopyWithImpl<$Res>
 @JsonSerializable()
 class _$_VisitorLog extends _VisitorLog {
   const _$_VisitorLog(
-      {this.visitorName = '',
+      {this.visitorLogId = '',
+      this.visitorName = '',
       this.description = '',
       this.imageUrl = '',
       @alwaysUseServerTimestampUnionTimestampConverter
@@ -165,6 +179,9 @@ class _$_VisitorLog extends _VisitorLog {
   factory _$_VisitorLog.fromJson(Map<String, dynamic> json) =>
       _$$_VisitorLogFromJson(json);
 
+  @override
+  @JsonKey()
+  final String visitorLogId;
   @override
   @JsonKey()
   final String visitorName;
@@ -181,7 +198,7 @@ class _$_VisitorLog extends _VisitorLog {
 
   @override
   String toString() {
-    return 'VisitorLog(visitorName: $visitorName, description: $description, imageUrl: $imageUrl, createdAt: $createdAt)';
+    return 'VisitorLog(visitorLogId: $visitorLogId, visitorName: $visitorName, description: $description, imageUrl: $imageUrl, createdAt: $createdAt)';
   }
 
   @override
@@ -189,6 +206,8 @@ class _$_VisitorLog extends _VisitorLog {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_VisitorLog &&
+            (identical(other.visitorLogId, visitorLogId) ||
+                other.visitorLogId == visitorLogId) &&
             (identical(other.visitorName, visitorName) ||
                 other.visitorName == visitorName) &&
             (identical(other.description, description) ||
@@ -201,8 +220,8 @@ class _$_VisitorLog extends _VisitorLog {
 
   @JsonKey(ignore: true)
   @override
-  int get hashCode =>
-      Object.hash(runtimeType, visitorName, description, imageUrl, createdAt);
+  int get hashCode => Object.hash(
+      runtimeType, visitorLogId, visitorName, description, imageUrl, createdAt);
 
   @JsonKey(ignore: true)
   @override
@@ -220,7 +239,8 @@ class _$_VisitorLog extends _VisitorLog {
 
 abstract class _VisitorLog extends VisitorLog {
   const factory _VisitorLog(
-      {final String visitorName,
+      {final String visitorLogId,
+      final String visitorName,
       final String description,
       final String imageUrl,
       @alwaysUseServerTimestampUnionTimestampConverter
@@ -230,6 +250,8 @@ abstract class _VisitorLog extends VisitorLog {
   factory _VisitorLog.fromJson(Map<String, dynamic> json) =
       _$_VisitorLog.fromJson;
 
+  @override
+  String get visitorLogId;
   @override
   String get visitorName;
   @override

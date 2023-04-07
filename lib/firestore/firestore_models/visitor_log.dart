@@ -9,6 +9,7 @@ part 'visitor_log.g.dart';
 @freezed
 class VisitorLog with _$VisitorLog {
   const factory VisitorLog({
+    @Default('') String visitorLogId,
     @Default('') String visitorName,
     @Default('') String description,
     @Default('') String imageUrl,
