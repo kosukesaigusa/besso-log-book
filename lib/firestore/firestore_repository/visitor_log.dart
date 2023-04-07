@@ -8,6 +8,10 @@ final visitorLogRepository =
     Provider.autoDispose((_) => VisitorLogRepository());
 
 class VisitorLogRepository {
+  /// [VisitorLog] を作成する。
+  Future<void> createVisitorLog({required VisitorLog visitorLog}) =>
+      visitorLogsRef.add(visitorLog);
+
   /// 指定した [VisitorLog] を取得する。
   Future<VisitorLog?> fetchVisitorLog({
     required String visitorLogId,
@@ -50,4 +54,8 @@ class VisitorLogRepository {
       return result;
     });
   }
+
+  /// 指定した [VisitorLog] を削除する。
+  Future<void> deleteVisitorLog({required String visitorLogId}) =>
+      visitorLogRef(visitorLogId: visitorLogId).delete();
 }
