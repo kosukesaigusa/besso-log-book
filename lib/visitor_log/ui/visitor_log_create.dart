@@ -13,11 +13,8 @@ class VisitorLogCreatePage extends StatelessWidget {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ElevatedButton(
-              onPressed: () {},
-              child: const Text('Create visitorLog.'),
-            ),
+          children: const [
+            Text('Create visitorLog page.'),
           ],
         ),
       ),

@@ -19,11 +19,15 @@ class VisitorLogsPage extends ConsumerWidget {
           children: [
             ElevatedButton(
               onPressed: () => context.router
-                  .push(VisitorLogDetailRoute(visitorLogId: 'abc')),
+                  .push<void>(VisitorLogDetailRoute(visitorLogId: 'abc')),
               child: const Text('Go to visitorLogs/abc'),
             ),
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            context.router.push<void>(const VisitorLogCreateRoute()),
       ),
     );
   }
