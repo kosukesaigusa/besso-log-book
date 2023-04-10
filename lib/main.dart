@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import 'firebase_options.dart';
+import 'loading/loading.dart';
+import 'loading/ui/overlay_loading.dart';
 import 'router/router.dart';
+import 'scaffold_messenger_controller.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -25,7 +28,19 @@ class App extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
+      scaffoldMessengerKey: ref.watch(scaffoldMessengerKey),
       routerConfig: ref.watch(_appRouter).config(),
+      builder: (context, child) {
+        final isLoading = ref.watch(showOverlayLoading);
+        return Material(
+          child: Stack(
+            children: [
+              child!,
+              if (isLoading) const OverlayLoading(),
+            ],
+          ),
+        );
+      },
     );
   }
 }

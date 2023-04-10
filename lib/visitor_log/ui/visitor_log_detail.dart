@@ -1,8 +1,9 @@
 import 'package:auto_route/annotations.dart';
 import 'package:flutter/material.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 @RoutePage()
-class VisitorLogDetailPage extends StatelessWidget {
+class VisitorLogDetailPage extends ConsumerWidget {
   const VisitorLogDetailPage({
     @PathParam('visitorLogId') required this.visitorLogId,
     super.key,
@@ -13,7 +14,7 @@ class VisitorLogDetailPage extends StatelessWidget {
   static const path = '/visitorLogs/:visitorLogId';
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       body: Center(
         child: Column(

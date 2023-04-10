@@ -4,20 +4,23 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import './string.dart';
 
-final scaffoldMessengerKeyProvider =
+final scaffoldMessengerKey =
     Provider((_) => GlobalKey<ScaffoldMessengerState>());
 
-final scaffoldMessengerControllerProvider =
-    Provider.autoDispose(ScaffoldMessengerService.new);
+final scaffoldMessengerController =
+    Provider.autoDispose(ScaffoldMessengerController.new);
 
 /// ツリー上部の [ScaffoldMessenger] 上でスナックバーやダイアログの表示を操作する。
-class ScaffoldMessengerService {
-  ScaffoldMessengerService(this._ref);
+class ScaffoldMessengerController {
+  ScaffoldMessengerController(this._ref);
 
-  final AutoDisposeProviderRef<ScaffoldMessengerService> _ref;
+  final AutoDisposeProviderRef<ScaffoldMessengerController> _ref;
 
-  GlobalKey<ScaffoldMessengerState> get scaffoldMessengerKey =>
-      _ref.read(scaffoldMessengerKeyProvider);
+  GlobalKey<ScaffoldMessengerState> get _key => _ref.read(scaffoldMessengerKey);
+
+  BuildContext get _currentContext => _key.currentContext!;
+
+  ScaffoldMessengerState get _currentState => _key.currentState!;
 
   /// [showDialog] で指定したビルダー関数を返す。
   Future<T?> showDialogByBuilder<T>({
@@ -25,7 +28,7 @@ class ScaffoldMessengerService {
     bool barrierDismissible = true,
   }) {
     return showDialog<T>(
-      context: scaffoldMessengerKey.currentContext!,
+      context: _currentContext,
       barrierDismissible: barrierDismissible,
       builder: builder,
     );
@@ -36,7 +39,7 @@ class ScaffoldMessengerService {
     required Widget Function(BuildContext) builder,
   }) async {
     return showModalBottomSheet<T>(
-      context: scaffoldMessengerKey.currentContext!,
+      context: _currentContext,
       builder: builder,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.only(
@@ -53,11 +56,10 @@ class ScaffoldMessengerService {
     bool removeCurrentSnackBar = true,
     Duration duration = _defaultSnackBarDuration,
   }) {
-    final scaffoldMessengerState = scaffoldMessengerKey.currentState!;
     if (removeCurrentSnackBar) {
-      scaffoldMessengerState.removeCurrentSnackBar();
+      _currentState.removeCurrentSnackBar();
     }
-    return scaffoldMessengerState.showSnackBar(
+    return _currentState.showSnackBar(
       SnackBar(
         content: Text(message),
         behavior: _defaultSnackBarBehavior,
@@ -77,14 +79,11 @@ class ScaffoldMessengerService {
   }
 
   /// [FirebaseException] 起点でスナックバーを表示する。
-  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>
-      showSnackBarByFirebaseException(
+  ScaffoldFeatureController<SnackBar,
+      SnackBarClosedReason> showSnackBarByFirebaseException(
     FirebaseException e,
-  ) {
-    return showSnackBar(
-      '[${e.code}]: ${e.message ?? 'FirebaseException が発生しました。'}',
-    );
-  }
+  ) =>
+      showSnackBar('[${e.code}]: ${e.message ?? 'FirebaseException が発生しました。'}');
 }
 
 const _defaultSnackBarBehavior = SnackBarBehavior.floating;

@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
+import '../../loading/loading.dart';
+import '../../scaffold_messenger_controller.dart';
 import '../visitor_log.dart';
 
 /// 購読された [VisitorLog] 一覧を返す [StreamProvider]。
@@ -16,18 +19,31 @@ final visitorLogs = StreamProvider.autoDispose<List<VisitorLog>>((ref) {
   return service.subscribe();
 });
 
-final visitorLogCreateController = Provider.autoDispose<VisitorLogController>(
-  (ref) => VisitorLogController(service: ref.watch(visitorLogService)),
+final visitorLogController = Provider.autoDispose<VisitorLogController>(
+  (ref) => VisitorLogController(
+    service: ref.watch(visitorLogService),
+    scaffoldMessengerController: ref.watch(scaffoldMessengerController),
+    overlayLoadingController: ref.watch(showOverlayLoading.notifier),
+  ),
 );
 
 /// [VisitorLog] に関する操作（主に書き込み系）を担当するコントローラ。
 /// ユーザーによる入力を解釈して、サービスクラスと通信をして然るべき操作を行う。
 /// UI とモデルの分離を明確にするために、やや冗長だが、このような構成にしている。
 class VisitorLogController {
-  VisitorLogController({required VisitorLogService service})
-      : _service = service;
+  VisitorLogController({
+    required VisitorLogService service,
+    required ScaffoldMessengerController scaffoldMessengerController,
+    required StateController<bool> overlayLoadingController,
+  })  : _service = service,
+        _scaffoldMessengerController = scaffoldMessengerController,
+        _overlayLoadingController = overlayLoadingController;
 
   final VisitorLogService _service;
+
+  final ScaffoldMessengerController _scaffoldMessengerController;
+
+  final StateController<bool> _overlayLoadingController;
 
   /// [VisitorLog] を作成する。
   Future<void> create({
@@ -35,17 +51,27 @@ class VisitorLogController {
     required String description,
     required String imageUrl,
   }) async {
-    // TODO: 仮実装。エラーハンドリングなど。
-    await _service.create(
-      visitorName: visitorName,
-      description: description,
-      imageUrl: imageUrl,
-    );
+    try {
+      await _service.create(
+        visitorName: visitorName,
+        description: description,
+        imageUrl: imageUrl,
+      );
+    } on FirebaseException catch (e) {
+      _scaffoldMessengerController.showSnackBarByFirebaseException(e);
+    } finally {
+      _overlayLoadingController.update((state) => false);
+    }
   }
 
   /// 指定した [VisitorLog] を削除する。
   Future<void> delete({required VisitorLog visitorLog}) async {
-    // TODO: 仮実装。エラーハンドリングなど。
-    await _service.delete(visitorLog: visitorLog);
+    try {
+      await _service.delete(visitorLog: visitorLog);
+    } on FirebaseException catch (e) {
+      _scaffoldMessengerController.showSnackBarByFirebaseException(e);
+    } finally {
+      _overlayLoadingController.update((state) => false);
+    }
   }
 }
