@@ -26,6 +26,12 @@ class ScaffoldMessengerController {
   ScaffoldMessengerState get _currentState =>
       _scaffoldMessengerKey.currentState!;
 
+  static const _defaultSnackBarBehavior = SnackBarBehavior.floating;
+
+  static const _defaultSnackBarDuration = Duration(seconds: 3);
+
+  static const _generalExceptionMessage = 'エラーが発生しました。';
+
   /// [showDialog] で指定したビルダー関数を返す。
   Future<T?> showDialogByBuilder<T>({
     required Widget Function(BuildContext) builder,
@@ -89,9 +95,3 @@ class ScaffoldMessengerController {
   ) =>
       showSnackBar('[${e.code}]: ${e.message ?? 'FirebaseException が発生しました。'}');
 }
-
-const _defaultSnackBarBehavior = SnackBarBehavior.floating;
-
-const _defaultSnackBarDuration = Duration(seconds: 3);
-
-const _generalExceptionMessage = 'エラーが発生しました。';
