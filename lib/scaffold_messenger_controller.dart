@@ -7,20 +7,24 @@ import './string.dart';
 final scaffoldMessengerKey =
     Provider((_) => GlobalKey<ScaffoldMessengerState>());
 
-final scaffoldMessengerController =
-    Provider.autoDispose(ScaffoldMessengerController.new);
+final scaffoldMessengerController = Provider.autoDispose(
+  (ref) => ScaffoldMessengerController(
+    scaffoldMessengerKey: ref.watch(scaffoldMessengerKey),
+  ),
+);
 
 /// ツリー上部の [ScaffoldMessenger] 上でスナックバーやダイアログの表示を操作する。
 class ScaffoldMessengerController {
-  ScaffoldMessengerController(this._ref);
+  ScaffoldMessengerController({
+    required GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey,
+  }) : _scaffoldMessengerKey = scaffoldMessengerKey;
 
-  final AutoDisposeProviderRef<ScaffoldMessengerController> _ref;
+  final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey;
 
-  GlobalKey<ScaffoldMessengerState> get _key => _ref.read(scaffoldMessengerKey);
+  BuildContext get _currentContext => _scaffoldMessengerKey.currentContext!;
 
-  BuildContext get _currentContext => _key.currentContext!;
-
-  ScaffoldMessengerState get _currentState => _key.currentState!;
+  ScaffoldMessengerState get _currentState =>
+      _scaffoldMessengerKey.currentState!;
 
   /// [showDialog] で指定したビルダー関数を返す。
   Future<T?> showDialogByBuilder<T>({
