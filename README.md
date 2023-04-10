@@ -101,6 +101,10 @@ final visitorLogs = StreamProvider.autoDispose<List<VisitorLog>>((ref) {
 書き込み系の操作や、複雑なユーザー操作を解釈するような操作は、Controller が担当することなので、`FooController` というクラスを定義してそのメソッドとしてそれらの操作を記述し、Controller クラスのインスタンスは素の `Provider` 経由で使用できるようにします。次のような感じです。
 
 ```dart
+final visitorLogController = Provider.autoDispose<VisitorLogController>(
+  (ref) => VisitorLogController(service: ref.watch(visitorLogService)),
+);
+
 class VisitorLogController {
   VisitorLogController({required VisitorLogService service})
       : _service = service;
