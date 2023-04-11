@@ -115,6 +115,6 @@ class VisitorLogController {
 }
 ```
 
-#### その他
+### その他
 
 その他は既存のコードを参考にしてください。
