@@ -2,7 +2,7 @@
 
 Flutter 別荘に遊びに行った訪問者が、訪問と思い出の記録のために写真とひとことを残し、それを一覧できる Flutter Web のアプリケーション。
 
-## 開発
+## 準備
 
 FVM を使用します。
 
@@ -62,9 +62,9 @@ lib
 
 Cloud Firestore のドキュメントと Dart の変数・インスタンスとの変換に必要な json_converter なども同じく `lib/firestore` ディレクトリに集めています。
 
-## auto_route
+### auto_route
 
-ルーティングについては、人気が高まっており十分な機能が提供されているので、[auto_route](https://pub.dev/packages/auto_route) パッケージを使用しています。使用方法はパッケージの README を読んでください。関連するコードは主に `lit/router` に記述されています。
+ルーティングについては、人気が高まっており十分な機能が提供されているので、[auto_route](https://pub.dev/packages/auto_route) パッケージを使用しています。使用方法はパッケージの README を読んでください。関連するコードは主に `lib/router` に記述されています。
 
 また、ルーティングの対象であるウィジェット（いわゆる "ページ" を表すウィジェット）は、`@RoutePage()` というアノテーションを付けた上で、以下のようにクラス名の末尾を `Page` とすると、`fvm flutter pub run build_runner watch --delete-conflicting-outputs` によって自動で `lib/router/router.gr.dart` のコードが生成し直されます。
 
@@ -79,7 +79,7 @@ class FooPage extends StatelessWidget {
 
 Riverpod の `FutureProvider` や `StreamProvider` などの各種の Provider を "Riverpod らしく" 活用して、再利用性の高いコンポーネントベースな設計をすることも、あえて使用する Provider を `StateNotifierProvider` に寄せていわゆる MVVM っぽく設計することも、また Riverpod の機能をフルに活用したインジェクションを行うことなどもできますが、本アプリケーションでは設計の分かり易さと享受できるメリットのバランスを考えて、その中間的な使用方法をします。
 
-#### インジェクションについて
+#### 依存性の注入について
 
 すべてコンストラクタ DI とします。また `ref` (`ProviderRef`) を丸ごと渡すことは禁止として、使用するクラスを明示的に渡します。`Riverpod` らしさをやや損なう冗長な記述となりますが、インジェクションの内容の明確化と単純なルールでそれを統一できること、`ProviderScope` などを使わずにユニットテストができることなどからそのようにします。
 
