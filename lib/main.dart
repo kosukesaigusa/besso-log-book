@@ -1,7 +1,9 @@
+import 'package:camera/camera.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
+import 'choose_image/ui/choose_image_controller.dart';
 import 'firebase_options.dart';
 import 'loading/loading.dart';
 import 'loading/ui/overlay_loading.dart';
@@ -13,7 +15,29 @@ Future<void> main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
-  runApp(const ProviderScope(child: App()));
+  final availableCameraDescription = await _getAvailableCameraDescription();
+  runApp(
+    ProviderScope(
+      overrides: [
+        cameraDescription.overrideWithValue(availableCameraDescription),
+      ],
+      child: const App(),
+    ),
+  );
+}
+
+/// 使用可能なカメラを取得する。
+/// 取得できない場合も例外は起こさずに null を返すようにする。
+Future<CameraDescription?> _getAvailableCameraDescription() async {
+  try {
+    final cameras = await availableCameras();
+    return cameras.isEmpty ? null : cameras.first;
+  } on CameraException {
+    return null;
+    // ignore: avoid_catches_without_on_clauses
+  } catch (_) {
+    return null;
+  }
 }
 
 final _appRouter = Provider.autoDispose<AppRouter>((_) => AppRouter());

@@ -15,8 +15,7 @@ import 'package:besso_log_book/visitor_log/ui/visitor_logs.dart' as _i3;
 import 'package:flutter/material.dart' as _i5;
 
 abstract class $AppRouter extends _i4.RootStackRouter {
-  $AppRouter([_i5.GlobalKey<_i5.NavigatorState>? navigatorKey])
-      : super(navigatorKey);
+  $AppRouter({super.navigatorKey});
 
   @override
   final Map<String, _i4.PageFactory> pagesMap = {

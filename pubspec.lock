@@ -45,18 +45,18 @@ packages:
     dependency: "direct main"
     description:
       name: auto_route
-      sha256: dea16e1d7ab19eb7025b7cb924a7b3ad03d08e0b749082355ef30d3cb988a37c
+      sha256: c012d5c631f9a201f07203a7084742618a1cef5e4d9f7b1e4fde6bc6158dd134
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.5"
+    version: "6.1.0"
   auto_route_generator:
     dependency: "direct dev"
     description:
       name: auto_route_generator
-      sha256: "4234d802e1248a992b2d5ae903583b0bfd413b38e7c837de5be86130e235cb2d"
+      sha256: "49d9c4eaa410d271c6d67044c579e695e8c5bbfd99de1e528c5ba1244e33809b"
       url: "https://pub.dev"
     source: hosted
-    version: "6.0.3"
+    version: "6.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -129,6 +129,46 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "8.4.4"
+  camera:
+    dependency: "direct main"
+    description:
+      name: camera
+      sha256: "7afc256902062cab191540c09908b98bc71e93d5e20b6486dbee51aa7731e9b2"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.4"
+  camera_android:
+    dependency: transitive
+    description:
+      name: camera_android
+      sha256: "772c111c78f31f868b98dbf6dbeda8d6ff77acea773a92ea5705ee2f7949ebfb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.10.5"
+  camera_avfoundation:
+    dependency: transitive
+    description:
+      name: camera_avfoundation
+      sha256: "7ac8b950672716722af235eed7a7c37896853669800b7da706bb0a9fd41d3737"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.9.13+1"
+  camera_platform_interface:
+    dependency: transitive
+    description:
+      name: camera_platform_interface
+      sha256: "525017018d116c5db8c4c43ec2d9b1663216b369c9f75149158280168a7ce472"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.5.0"
+  camera_web:
+    dependency: "direct main"
+    description:
+      name: camera_web
+      sha256: d77965f32479ee6d8f48205dcf10f845d7210595c6c00faa51eab265d1cae993
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.1+3"
   characters:
     dependency: transitive
     description:
@@ -201,6 +241,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.1.1"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      sha256: "0b0036e8cccbfbe0555fd83c1d31a6f30b77a96b598b35a5d36dd41f718695e9"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.3.3+4"
   crypto:
     dependency: transitive
     description:
@@ -310,14 +358,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.18.6"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      sha256: c224ac897bed083dabf11f238dd11a239809b446740be0c2044608c50029ffdf
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.0.9"
   flutter_riverpod:
     dependency: transitive
     description:
       name: flutter_riverpod
-      sha256: b3c3a8a9714b7f88dd2a41e1efbc47f76d620b06ab427c62ae7bc82298cd7dbb
+      sha256: "812dfbb87af51e73e68ea038bcfd1c732078d6838d3388d03283db7dec0d1e5f"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.4"
   flutter_test:
     dependency: "direct dev"
     description: flutter
@@ -380,10 +436,10 @@ packages:
     dependency: "direct main"
     description:
       name: hooks_riverpod
-      sha256: "7e673817a7db4d6403a079882485affd3156d79c06209389353d0977d513f905"
+      sha256: eceb62b7e3a18e6c2831498c3f2ea5b42c0a938c95d0c1eb1b8a7ccdd022accc
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.4"
   http:
     dependency: transitive
     description:
@@ -408,6 +464,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "4.0.2"
+  image_picker_web:
+    dependency: "direct main"
+    description:
+      name: image_picker_web
+      sha256: "1185be1cf3cf2ccd99be3f2fd451647147fe512f09db0aad894438ab95a984eb"
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.0.0+1"
   io:
     dependency: transitive
     description:
@@ -536,14 +600,22 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.2.2"
+  quiver:
+    dependency: transitive
+    description:
+      name: quiver
+      sha256: b1c1ac5ce6688d77f65f3375a9abb9319b3cb32486bdc7a1e0fdf004d7ba4e47
+      url: "https://pub.dev"
+    source: hosted
+    version: "3.2.1"
   riverpod:
     dependency: transitive
     description:
       name: riverpod
-      sha256: b0fbf7927333c5c318f7e2c22c8b4fd2542ba294de0373e80ecdb34e0dcd8dc4
+      sha256: "77ab3bcd084bb19fa8717a526217787c725d7f5be938404c7839cd760fdf6ae5"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.3.4"
   shelf:
     dependency: transitive
     description:
@@ -711,4 +783,4 @@ packages:
     version: "3.1.1"
 sdks:
   dart: ">=2.19.5 <3.0.0"
-  flutter: ">=3.0.0"
+  flutter: ">=3.3.0"

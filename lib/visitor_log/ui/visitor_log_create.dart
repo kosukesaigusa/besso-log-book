@@ -1,6 +1,8 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
+import '../../choose_image/ui/choose_image.dart';
+
 @RoutePage()
 class VisitorLogCreatePage extends StatelessWidget {
   const VisitorLogCreatePage({super.key});
@@ -15,6 +17,7 @@ class VisitorLogCreatePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
             Text('Create visitorLog page.'),
+            ChooseImage(),
           ],
         ),
       ),
