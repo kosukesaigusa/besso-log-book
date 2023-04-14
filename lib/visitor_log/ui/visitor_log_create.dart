@@ -7,7 +7,7 @@ import '../../choose_image/ui/choose_image.dart';
 class VisitorLogCreatePage extends StatelessWidget {
   const VisitorLogCreatePage({super.key});
 
-  static const path = '/visitorLogs/create';
+  static const path = '/visitorLog/create';
 
   @override
   Widget build(BuildContext context) {

@@ -54,6 +54,9 @@ class ChooseImageController {
     }
   }
 
+  /// 選択された画像を破棄する。
+  void resetChosenImage() => _chosenImageDataController.update((_) => null);
+
   /// [ImagePickerWeb] を使用して、端末から画像を選択して返す。
   Future<void> _chooseFromGallery() async {
     final imageData = await ImagePickerWeb.getImageAsBytes();
