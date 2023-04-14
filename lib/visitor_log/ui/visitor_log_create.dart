@@ -12,11 +12,11 @@ class VisitorLogCreatePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(title: const Text('訪問記録作成')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            Text('Create visitorLog page.'),
             ChooseImage(),
           ],
         ),

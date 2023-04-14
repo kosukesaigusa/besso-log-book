@@ -13,6 +13,7 @@ class VisitorLogsPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(title: const Text('訪問記録一覧')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -20,14 +21,16 @@ class VisitorLogsPage extends ConsumerWidget {
             ElevatedButton(
               onPressed: () => context.router
                   .push<void>(VisitorLogDetailRoute(visitorLogId: 'abc')),
-              child: const Text('Go to /visitorLogs/abc'),
+              child: const Text('/visitorLogs/:abc ページへ'),
             ),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () =>
-            context.router.push<void>(const VisitorLogCreateRoute()),
+        onPressed: () => context.router.push<void>(
+          const VisitorLogCreateRoute(),
+        ),
+        child: const Icon(Icons.camera_alt),
       ),
     );
   }

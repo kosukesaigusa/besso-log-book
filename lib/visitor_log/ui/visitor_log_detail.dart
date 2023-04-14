@@ -16,11 +16,12 @@ class VisitorLogDetailPage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
+      appBar: AppBar(title: const Text('訪問記録')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('visitorLogId: $visitorLogId'),
+            Text('訪問記録 ID: $visitorLogId'),
           ],
         ),
       ),
