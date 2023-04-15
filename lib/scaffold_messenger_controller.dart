@@ -4,11 +4,14 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import './string.dart';
 
+final navigatorKeyProvider = Provider((_) => GlobalKey<NavigatorState>());
+
 final scaffoldMessengerKeyProvider =
     Provider((_) => GlobalKey<ScaffoldMessengerState>());
 
 final scaffoldMessengerControllerProvider = Provider.autoDispose(
   (ref) => ScaffoldMessengerController(
+    navigatorKey: ref.watch(navigatorKeyProvider),
     scaffoldMessengerKey: ref.watch(scaffoldMessengerKeyProvider),
   ),
 );
@@ -16,12 +19,16 @@ final scaffoldMessengerControllerProvider = Provider.autoDispose(
 /// ツリー上部の [ScaffoldMessenger] 上でスナックバーやダイアログの表示を操作する。
 class ScaffoldMessengerController {
   ScaffoldMessengerController({
+    required GlobalKey<NavigatorState> navigatorKey,
     required GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey,
-  }) : _scaffoldMessengerKey = scaffoldMessengerKey;
+  })  : _navigatorKey = navigatorKey,
+        _scaffoldMessengerKey = scaffoldMessengerKey;
+
+  final GlobalKey<NavigatorState> _navigatorKey;
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey;
 
-  BuildContext get _currentContext => _scaffoldMessengerKey.currentContext!;
+  BuildContext get _currentContext => _navigatorKey.currentContext!;
 
   ScaffoldMessengerState get _currentState =>
       _scaffoldMessengerKey.currentState!;

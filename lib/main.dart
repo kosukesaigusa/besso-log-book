@@ -32,13 +32,19 @@ class App extends ConsumerWidget {
       routerConfig: ref.watch(_appRouterProvider).config(),
       builder: (context, child) {
         final isLoading = ref.watch(showOverlayLoadingStateProvider);
-        return Material(
-          child: Stack(
-            children: [
-              child!,
-              if (isLoading) const OverlayLoading(),
-            ],
-          ),
+        return Navigator(
+          key: ref.watch(navigatorKeyProvider),
+          onPopPage: (_, __) => false,
+          pages: [
+            MaterialPage<Widget>(
+              child: Stack(
+                children: [
+                  child!,
+                  if (isLoading) const OverlayLoading(),
+                ],
+              ),
+            )
+          ],
         );
       },
     );
