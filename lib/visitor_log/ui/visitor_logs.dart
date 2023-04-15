@@ -6,12 +6,8 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
 import '../../firestore/firestore_repository/visitor_log.dart';
-<<<<<<< Updated upstream
-import '../../scaffold_messenger_controller.dart';
-import 'visitor_log_controller.dart';
-=======
 import '../../navigator_controller.dart';
->>>>>>> Stashed changes
+import 'visitor_log_controller.dart';
 import 'visitor_log_dialog.dart';
 
 final visitorLogsStreamProvider =

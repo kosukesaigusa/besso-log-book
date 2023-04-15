@@ -6,8 +6,6 @@ import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
-import '../../loading/ui/overlay_loading.dart';
-import '../../scaffold_messenger_controller.dart';
 import 'visitor_log_controller.dart';
 
 part 'visitor_log_dialog.freezed.dart';
@@ -29,7 +27,6 @@ class VisitorLogDialog extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-<<<<<<< Updated upstream
     return AlertDialog(
       insetPadding: const EdgeInsets.all(16),
       title: const Text('投稿'),
@@ -111,121 +108,17 @@ class VisitorLogDialog extends ConsumerWidget {
                                 imageData: pickedImageData,
                               );
                           navigator.pop();
-=======
-    return Stack(
-      children: [
-        ScaffoldMessenger(
-          key: ref.watch(scaffoldMessengerKeyOnVisitorLogDialogProvider),
-          child: Scaffold(
-            backgroundColor: Colors.transparent,
-            body: AlertDialog(
-              insetPadding: const EdgeInsets.all(16),
-              title: const Text('投稿'),
-              content: SizedBox(
-                width: min(MediaQuery.of(context).size.width, 480),
-                child: SingleChildScrollView(
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      ...visitorLogDialogType.when(
-                        read: (visitorLog) => [
-                          SizedBox(
-                            width: 96,
-                            child: Image.network(visitorLog.imageUrl),
-                          ),
-                          const Gap(16),
-                          const _VisitorNameTextField(enabled: false),
-                          const Gap(16),
-                          const _DescriptionTextField(enabled: false),
-                        ],
-                        create: () {
-                          final pickedImageData =
-                              ref.watch(pickedImageDataStateProvider);
-                          return [
-                            if (pickedImageData == null) ...[
-                              const Icon(Icons.photo_outlined, size: 64),
-                              const Gap(32),
-                              ElevatedButton(
-                                onPressed: () => ref
-                                    .read(visitorLogControllerProvider)
-                                    .pickImage(),
-                                child: const Text('画像を選択する'),
-                              ),
-                              const Gap(16),
-                              TextButton(
-                                onPressed: () => Navigator.pop(context),
-                                child: const Text(
-                                  'キャンセル',
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                              ),
-                            ] else ...[
-                              SizedBox(
-                                width: 96,
-                                child: Image.memory(pickedImageData),
-                              ),
-                              const Gap(4),
-                              TextButton(
-                                onPressed: () => ref
-                                    .read(visitorLogControllerProvider)
-                                    .resetPickedImage(),
-                                child: const Text(
-                                  '画像を選び直す',
-                                  style: TextStyle(
-                                    color: Colors.grey,
-                                    fontSize: 12,
-                                  ),
-                                ),
-                              ),
-                              const Gap(16),
-                              const _VisitorNameTextField(enabled: true),
-                              const Gap(16),
-                              const _DescriptionTextField(enabled: true),
-                              const Gap(16),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  final navigator = Navigator.of(context);
-                                  final result = await ref
-                                      .read(visitorLogControllerProvider)
-                                      .createVisitorLog(
-                                        visitorName: ref
-                                            .read(
-                                              visitorNameTextEditingController,
-                                            )
-                                            .text,
-                                        description: ref
-                                            .read(
-                                              descriptionTextEditingController,
-                                            )
-                                            .text,
-                                        imageData: pickedImageData,
-                                      );
-                                  if (result) {
-                                    navigator.pop();
-                                    ref
-                                        .read(
-                                          mainScaffoldMessengerControllerProvider,
-                                        )
-                                        .showSnackBar('投稿を追加しました！');
-                                  }
-                                },
-                                child: const Text('投稿する'),
-                              ),
-                            ],
-                          ];
->>>>>>> Stashed changes
                         },
+                        child: const Text('投稿'),
                       ),
                     ],
-                  ),
-                ),
+                  ];
+                },
               ),
-            ),
+            ],
           ),
         ),
-        if (ref.watch(showOverlayLoadingOnVisitorLogCreateDialogStateProvider))
-          const OverlayLoading()
-      ],
+      ),
     );
   }
 }
@@ -300,11 +193,7 @@ class _DescriptionTextFieldState extends ConsumerState<_DescriptionTextField> {
   @override
   Widget build(BuildContext context) {
     return TextField(
-<<<<<<< Updated upstream
       enabled: widget.enabled,
-=======
-      enabled: enabled,
->>>>>>> Stashed changes
       controller: ref.watch(descriptionTextEditingController),
       keyboardType: TextInputType.multiline,
       minLines: 2,
