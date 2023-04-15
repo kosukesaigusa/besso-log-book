@@ -14,16 +14,18 @@ import '../visitor_log.dart';
 /// 使いやすいと判断してこのように切り出した。
 /// なお、やや冗長だが、コントローラから `Repository` と直接やり取りしないように
 /// しているので、内部では [VisitorLogService] のメソッドを使用する。
-final visitorLogs = StreamProvider.autoDispose<List<VisitorLog>>((ref) {
-  final service = ref.watch(visitorLogService);
+final visitorLogsStreamProvider =
+    StreamProvider.autoDispose<List<VisitorLog>>((ref) {
+  final service = ref.watch(visitorLogServiceProvider);
   return service.subscribe();
 });
 
-final visitorLogController = Provider.autoDispose<VisitorLogController>(
+final visitorLogControllerProvider = Provider.autoDispose<VisitorLogController>(
   (ref) => VisitorLogController(
-    service: ref.watch(visitorLogService),
-    scaffoldMessengerController: ref.watch(scaffoldMessengerController),
-    overlayLoadingController: ref.watch(showOverlayLoading.notifier),
+    service: ref.watch(visitorLogServiceProvider),
+    scaffoldMessengerController: ref.watch(scaffoldMessengerControllerProvider),
+    overlayLoadingController:
+        ref.watch(showOverlayLoadingStateProvider.notifier),
   ),
 );
 

@@ -4,12 +4,12 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import './string.dart';
 
-final scaffoldMessengerKey =
+final scaffoldMessengerKeyProvider =
     Provider((_) => GlobalKey<ScaffoldMessengerState>());
 
-final scaffoldMessengerController = Provider.autoDispose(
+final scaffoldMessengerControllerProvider = Provider.autoDispose(
   (ref) => ScaffoldMessengerController(
-    scaffoldMessengerKey: ref.watch(scaffoldMessengerKey),
+    scaffoldMessengerKey: ref.watch(scaffoldMessengerKeyProvider),
   ),
 );
 

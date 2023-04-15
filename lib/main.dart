@@ -19,7 +19,7 @@ Future<void> main() async {
   runApp(
     ProviderScope(
       overrides: [
-        cameraDescription.overrideWithValue(availableCameraDescription),
+        cameraDescriptionProvider.overrideWithValue(availableCameraDescription),
       ],
       child: const App(),
     ),
@@ -40,7 +40,7 @@ Future<CameraDescription?> _getAvailableCameraDescription() async {
   }
 }
 
-final _appRouter = Provider.autoDispose<AppRouter>((_) => AppRouter());
+final _appRouterProvider = Provider.autoDispose<AppRouter>((_) => AppRouter());
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -52,10 +52,10 @@ class App extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      scaffoldMessengerKey: ref.watch(scaffoldMessengerKey),
-      routerConfig: ref.watch(_appRouter).config(),
+      scaffoldMessengerKey: ref.watch(scaffoldMessengerKeyProvider),
+      routerConfig: ref.watch(_appRouterProvider).config(),
       builder: (context, child) {
-        final isLoading = ref.watch(showOverlayLoading);
+        final isLoading = ref.watch(showOverlayLoadingStateProvider);
         return Material(
           child: Stack(
             children: [

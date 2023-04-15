@@ -5,22 +5,26 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
 /// 選択可能なカメラの [CameraDescription]。
-final cameraDescription =
+final cameraDescriptionProvider =
     Provider<CameraDescription?>((_) => throw UnimplementedError());
 
 /// 選択された画像。
-final chosenImageData = StateProvider.autoDispose<Uint8List?>((_) => null);
+final chosenImageDataStateProvider =
+    StateProvider.autoDispose<Uint8List?>((_) => null);
 
 /// camera パッケージの [CameraController]。
-final cameraController = Provider.autoDispose<CameraController>(
-  (ref) =>
-      CameraController(ref.watch(cameraDescription)!, ResolutionPreset.high),
+final cameraControllerProvider = Provider.autoDispose<CameraController>(
+  (ref) => CameraController(
+    ref.watch(cameraDescriptionProvider)!,
+    ResolutionPreset.high,
+  ),
 );
 
-final chooseImageController = Provider.autoDispose<ChooseImageController>(
+final chooseImageControllerProvider =
+    Provider.autoDispose<ChooseImageController>(
   (ref) => ChooseImageController(
-    cameraController: ref.watch(cameraController),
-    chosenImageController: ref.watch(chosenImageData.notifier),
+    cameraController: ref.watch(cameraControllerProvider),
+    chosenImageController: ref.watch(chosenImageDataStateProvider.notifier),
   ),
 );
 

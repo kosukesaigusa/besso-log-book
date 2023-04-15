@@ -4,7 +4,7 @@ import '../../logger.dart';
 import '../firestore_models/visitor_log.dart';
 import '../firestore_refs.dart';
 
-final visitorLogRepository =
+final visitorLogRepositoryProvider =
     Provider.autoDispose((_) => VisitorLogRepository());
 
 class VisitorLogRepository {

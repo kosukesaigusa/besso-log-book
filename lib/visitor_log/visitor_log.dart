@@ -3,9 +3,10 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../firestore/firestore_models/visitor_log.dart';
 import '../firestore/firestore_repository/visitor_log.dart';
 
-final visitorLogService = Provider.autoDispose<VisitorLogService>(
-  (ref) =>
-      VisitorLogService(visitorLogRepository: ref.watch(visitorLogRepository)),
+final visitorLogServiceProvider = Provider.autoDispose<VisitorLogService>(
+  (ref) => VisitorLogService(
+    visitorLogRepository: ref.watch(visitorLogRepositoryProvider),
+  ),
 );
 
 /// [VisitorLog] に関するサービス（モデル）クラス。

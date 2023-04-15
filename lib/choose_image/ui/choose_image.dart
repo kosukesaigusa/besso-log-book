@@ -12,8 +12,8 @@ class ChooseImage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final chosenImageUintList = ref.watch(chosenImageData);
-    final controller = ref.watch(chooseImageController);
+    final chosenImageData = ref.watch(chosenImageDataStateProvider);
+    final chooseImageController = ref.watch(chooseImageControllerProvider);
     return Column(
       children: [
         Container(
@@ -23,30 +23,33 @@ class ChooseImage extends ConsumerWidget {
             color: Colors.grey[200],
             borderRadius: BorderRadius.circular(16),
           ),
-          child: chosenImageUintList == null
+          child: chosenImageData == null
               ? FutureBuilder<void>(
-                  future: controller.initializeCameraController,
+                  future: chooseImageController.initializeCameraController,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
-                      return CameraPreview(ref.watch(cameraController));
+                      return CameraPreview(ref.watch(cameraControllerProvider));
                     } else {
                       return const Center(child: CircularProgressIndicator());
                     }
                   },
                 )
-              : Image.memory(chosenImageUintList),
+              : Image.memory(chosenImageData),
         ),
         const Gap(32),
         ElevatedButton(
-          onPressed: () =>
-              ref.read(chooseImageController).chooseImage(ImageSource.gallery),
+          onPressed: () => ref
+              .read(chooseImageControllerProvider)
+              .chooseImage(ImageSource.gallery),
           child: const Text('端末から画像を選択する'),
         ),
         const Gap(16),
         ElevatedButton(
-          onPressed: () => chosenImageUintList == null
-              ? ref.read(chooseImageController).chooseImage(ImageSource.camera)
-              : ref.read(chooseImageController).resetChosenImage(),
+          onPressed: () => chosenImageData == null
+              ? ref
+                  .read(chooseImageControllerProvider)
+                  .chooseImage(ImageSource.camera)
+              : ref.read(chooseImageControllerProvider).resetChosenImage(),
           child: const Text('カメラを起動して写真を撮る'),
         ),
       ],
