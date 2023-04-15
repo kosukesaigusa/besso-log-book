@@ -8,88 +8,66 @@
 // coverage:ignore-file
 
 // ignore_for_file: no_leading_underscores_for_library_prefixes
-import 'package:auto_route/auto_route.dart' as _i3;
-import 'package:besso_log_book/visitor_log/ui/visitor_log_detail.dart' as _i1;
-import 'package:besso_log_book/visitor_log/ui/visitor_logs.dart' as _i2;
-import 'package:flutter/material.dart' as _i4;
+import 'package:auto_route/auto_route.dart' as _i2;
+import 'package:besso_log_book/visitor_log/ui/visitor_logs.dart' as _i1;
+import 'package:flutter/material.dart' as _i3;
 
-abstract class $AppRouter extends _i3.RootStackRouter {
+abstract class $AppRouter extends _i2.RootStackRouter {
   $AppRouter({super.navigatorKey});
 
   @override
-  final Map<String, _i3.PageFactory> pagesMap = {
-    VisitorLogDetailRoute.name: (routeData) {
-      final pathParams = routeData.inheritedPathParams;
-      final args = routeData.argsAs<VisitorLogDetailRouteArgs>(
-          orElse: () => VisitorLogDetailRouteArgs(
-              visitorLogId: pathParams.getString('visitorLogId')));
-      return _i3.AutoRoutePage<dynamic>(
+  final Map<String, _i2.PageFactory> pagesMap = {
+    VisitorLogsRoute.name: (routeData) {
+      final queryParams = routeData.queryParams;
+      final args = routeData.argsAs<VisitorLogsRouteArgs>(
+          orElse: () => VisitorLogsRouteArgs(
+              visitorLogId: queryParams.optString('visitorLogId')));
+      return _i2.AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: _i1.VisitorLogDetailPage(
+        child: _i1.VisitorLogsPage(
           visitorLogId: args.visitorLogId,
           key: args.key,
         ),
       );
-    },
-    VisitorLogsRoute.name: (routeData) {
-      return _i3.AutoRoutePage<dynamic>(
-        routeData: routeData,
-        child: const _i2.VisitorLogsPage(),
-      );
-    },
+    }
   };
 }
 
 /// generated route for
-/// [_i1.VisitorLogDetailPage]
-class VisitorLogDetailRoute
-    extends _i3.PageRouteInfo<VisitorLogDetailRouteArgs> {
-  VisitorLogDetailRoute({
-    required String visitorLogId,
-    _i4.Key? key,
-    List<_i3.PageRouteInfo>? children,
+/// [_i1.VisitorLogsPage]
+class VisitorLogsRoute extends _i2.PageRouteInfo<VisitorLogsRouteArgs> {
+  VisitorLogsRoute({
+    String? visitorLogId,
+    _i3.Key? key,
+    List<_i2.PageRouteInfo>? children,
   }) : super(
-          VisitorLogDetailRoute.name,
-          args: VisitorLogDetailRouteArgs(
+          VisitorLogsRoute.name,
+          args: VisitorLogsRouteArgs(
             visitorLogId: visitorLogId,
             key: key,
           ),
-          rawPathParams: {'visitorLogId': visitorLogId},
-          initialChildren: children,
-        );
-
-  static const String name = 'VisitorLogDetailRoute';
-
-  static const _i3.PageInfo<VisitorLogDetailRouteArgs> page =
-      _i3.PageInfo<VisitorLogDetailRouteArgs>(name);
-}
-
-class VisitorLogDetailRouteArgs {
-  const VisitorLogDetailRouteArgs({
-    required this.visitorLogId,
-    this.key,
-  });
-
-  final String visitorLogId;
-
-  final _i4.Key? key;
-
-  @override
-  String toString() {
-    return 'VisitorLogDetailRouteArgs{visitorLogId: $visitorLogId, key: $key}';
-  }
-}
-
-/// generated route for
-/// [_i2.VisitorLogsPage]
-class VisitorLogsRoute extends _i3.PageRouteInfo<void> {
-  const VisitorLogsRoute({List<_i3.PageRouteInfo>? children})
-      : super(
-          VisitorLogsRoute.name,
+          rawQueryParams: {'visitorLogId': visitorLogId},
           initialChildren: children,
         );
 
   static const String name = 'VisitorLogsRoute';
 
-  static const _i3.PageInfo<void> page = _i3.PageInfo<void>(name);
+  static const _i2.PageInfo<VisitorLogsRouteArgs> page =
+      _i2.PageInfo<VisitorLogsRouteArgs>(name);
+}
+
+class VisitorLogsRouteArgs {
+  const VisitorLogsRouteArgs({
+    this.visitorLogId,
+    this.key,
+  });
+
+  final String? visitorLogId;
+
+  final _i3.Key? key;
+
+  @override
+  String toString() {
+    return 'VisitorLogsRouteArgs{visitorLogId: $visitorLogId, key: $key}';
+  }
 }
