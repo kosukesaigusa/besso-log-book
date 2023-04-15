@@ -17,105 +17,128 @@ final visitorLogsStreamProvider =
 
 @RoutePage()
 class VisitorLogsPage extends ConsumerWidget {
-  const VisitorLogsPage({super.key});
+  const VisitorLogsPage({
+    @QueryParam('visitorLogId') this.visitorLogId,
+    super.key,
+  });
 
   static const path = '/visitorLogs';
+  final String? visitorLogId;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    print('width: ${MediaQuery.of(context).size.width},'
+    debugPrint('width: ${MediaQuery.of(context).size.width},'
         ' height: ${MediaQuery.of(context).size.height}');
+    final width = MediaQuery.of(context).size.width;
+
     return ref.watch(visitorLogsStreamProvider).when(
           data: (visitorLogs) {
-            // todo change color
+            // todo show dialog
+            if (visitorLogId != null) {
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) {
+                    return const VisitorLogCreateDialog();
+                  },
+                );
+              });
+            }
+
             return Scaffold(
               appBar: AppBar(
-                title: const Text('LogBook'),
-                backgroundColor: Colors.black,
+                title: const Text(
+                  'Welcome to flutter別荘',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontStyle: FontStyle.italic,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                backgroundColor: const Color(0xFFffe6b3),
                 elevation: 0,
               ),
               body: Center(
                 child: DecoratedBox(
                   decoration: const BoxDecoration(
-                      color: Colors.brown,
-                      border: Border(
-                        right: BorderSide(
-                          color: Colors.black,
-                          width: 20,
-                        ),
-                        left: BorderSide(
-                          color: Colors.black,
-                          width: 20,
-                        ),
-                        bottom: BorderSide(
-                          color: Colors.black,
-                          width: 20,
-                        ),
-                      )),
+                    color: Color(0xFFb37700),
+                    border: Border(
+                      right: BorderSide(
+                        color: Color(0xFFffe6b3),
+                        width: 20,
+                      ),
+                      left: BorderSide(
+                        color: Color(0xFFffe6b3),
+                        width: 20,
+                      ),
+                      bottom: BorderSide(
+                        color: Color(0xFFffe6b3),
+                        width: 20,
+                      ),
+                    ),
+                  ),
                   child: Padding(
                     padding: const EdgeInsets.all(20),
                     child: GridView.builder(
-                        itemCount: visitorLogs.length,
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          //todo webとmobileの分岐点（出来ればここだけで抑えたい）
-                          crossAxisCount: 2,
-                        ),
-                        itemBuilder: (context, index) {
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () {
-                                    // todo commented out
-                                    //   context.router.push<void>(
-                                    //   VisitorLogDetailRoute(visitorLogId: 'abc'),
-                                    // );
-                                  },
-                                  child: DecoratedBox(
-                                    decoration: const BoxDecoration(
-                                        // todo commented out
-                                        // color: Colors.grey,
+                      itemCount: visitorLogs.length,
+                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                        // デバイスの横幅でグリッドの列数を調整
+                        crossAxisCount: width < 600
+                            ? 2
+                            : width <= 1000
+                                ? 3
+                                : width <= 1400
+                                    ? 4
+                                    : 5,
+                      ),
+                      itemBuilder: (context, index) {
+                        final log = visitorLogs[index];
+                        final imageUrl = log.imageUrl;
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  // todo show dialog
+                                },
+                                child: Center(
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 24,
+                                      vertical: 12,
+                                    ),
+                                    child: Transform.rotate(
+                                      angle: _randomAngle(
+                                        min: -0.2,
+                                        max: 0.2,
+                                      ),
+                                      child: DecoratedBox(
+                                        decoration: const BoxDecoration(
+                                          color: Colors.white,
                                         ),
-                                    child: Center(
-                                      child: Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                          horizontal: 24,
-                                          vertical: 12,
-                                        ),
-                                        child: Transform.rotate(
-                                          angle: _randomAngle(
-                                            min: -0.2,
-                                            max: 0.2,
-                                          ),
-                                          child: DecoratedBox(
-                                            decoration: const BoxDecoration(
-                                              color: Colors.white,
-                                            ),
-                                            child: Center(
-                                              child: Column(
-                                                children: [
-                                                  Container(
-                                                    width: 12,
-                                                    height: 12,
-                                                    decoration:
-                                                        const BoxDecoration(
-                                                      // todo random color
-                                                      color: Colors.black,
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                  Expanded(
-                                                    child: Image.asset(
-                                                      'assets/images/example_photo.jpeg',
-                                                    ),
-                                                  ),
-                                                  const SizedBox(height: 8),
-                                                ],
+                                        child: Center(
+                                          child: Column(
+                                            children: [
+                                              Container(
+                                                width: 12,
+                                                height: 12,
+                                                decoration: const BoxDecoration(
+                                                  color: Colors.black,
+                                                  shape: BoxShape.circle,
+                                                ),
                                               ),
-                                            ),
+                                              Expanded(
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8),
+                                                  child: Image.network(
+                                                    imageUrl,
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
                                           ),
                                         ),
                                       ),
@@ -123,13 +146,16 @@ class VisitorLogsPage extends ConsumerWidget {
                                   ),
                                 ),
                               ),
-                            ],
-                          );
-                        }),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
               floatingActionButton: FloatingActionButton(
+                backgroundColor: Colors.brown,
                 onPressed: () => ref
                     .read(scaffoldMessengerControllerProvider)
                     .showDialogByBuilder<void>(
