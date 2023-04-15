@@ -12,25 +12,43 @@ class PickImage extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final pickedImageData = ref.watch(pickedImageDataStateProvider);
-    return Column(
-      children: [
-        Container(
-          width: 400,
-          height: 400,
-          decoration: BoxDecoration(
-            color: Colors.grey[200],
-            borderRadius: BorderRadius.circular(16),
-          ),
-          child: pickedImageData == null
-              ? const Icon(Icons.photo)
-              : Image.memory(pickedImageData),
-        ),
-        const Gap(32),
-        ElevatedButton(
-          onPressed: () => ref.read(pickImageControllerProvider).pickImage(),
-          child: const Text('画像を選択する'),
-        ),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (pickedImageData == null) ...[
+            const Icon(Icons.photo_outlined, size: 64),
+            const Gap(32),
+            ElevatedButton(
+              onPressed: () =>
+                  ref.read(pickImageControllerProvider).pickImage(),
+              child: const Text('画像を選択する'),
+            ),
+            const Gap(16),
+            TextButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Text('キャンセル'),
+            ),
+          ] else ...[
+            Image.memory(pickedImageData),
+            const Gap(16),
+            const TextField(
+              decoration: InputDecoration(labelText: '訪問者の名前'),
+            ),
+            const Gap(16),
+            const TextField(
+              keyboardType: TextInputType.multiline,
+              decoration: InputDecoration(labelText: '思い出やひとこと'),
+            ),
+            const Gap(16),
+            TextButton(
+              onPressed: () =>
+                  ref.read(pickImageControllerProvider).resetPickedImage(),
+              child: const Text('キャンセル'),
+            ),
+          ],
+        ],
+      ),
     );
   }
 }

@@ -4,7 +4,9 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
 import '../../firestore/firestore_repository/visitor_log.dart';
+import '../../pick_image/ui/pick_image.dart';
 import '../../router/router.gr.dart';
+import '../../scaffold_messenger_controller.dart';
 
 final visitorLogsStreamProvider =
     StreamProvider.autoDispose<List<VisitorLog>>((ref) {
@@ -40,9 +42,18 @@ class VisitorLogsPage extends ConsumerWidget {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => context.router.push<void>(
-          const VisitorLogCreateRoute(),
-        ),
+        onPressed: () => ref
+            .read(scaffoldMessengerControllerProvider)
+            .showDialogByBuilder<void>(
+              barrierDismissible: false,
+              builder: (context) => const AlertDialog(
+                title: Text('訪問記録の作成'),
+                content: Padding(
+                  padding: EdgeInsets.all(16),
+                  child: PickImage(),
+                ),
+              ),
+            ),
         child: const Icon(Icons.camera_alt),
       ),
     );
