@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:image_picker_web/image_picker_web.dart';
 
+import '../../firebase_storage.dart';
 import '../../firestore/firestore_models/visitor_log.dart';
-import '../../loading/loading.dart';
 import '../../scaffold_messenger_controller.dart';
 import '../visitor_log.dart';
 
@@ -20,16 +20,20 @@ import '../visitor_log.dart';
 /// しているので、内部では [VisitorLogService] のメソッドを使用する。
 final visitorLogsStreamProvider =
     StreamProvider.autoDispose<List<VisitorLog>>((ref) {
-  final service = ref.watch(visitorLogServiceProvider);
-  return service.subscribe();
+  final visitorLogService = ref.watch(visitorLogServiceProvider);
+  return visitorLogService.subscribe();
 });
 
 /// 選択された画像データ。
 final pickedImageDataStateProvider =
     StateProvider.autoDispose<Uint8List?>((_) => null);
 
+/// 訪問記録作成ダイアログ上で OverlayLoading を表示するかどうか。
+final showOverlayLoadingOnVisitorLogCreateDialogStateProvider =
+    StateProvider<bool>((_) => false);
+
 /// 訪問者の名前の [TextEditingController]。
-final nameTextEditingController =
+final visitorNameTextEditingController =
     Provider.autoDispose<TextEditingController>((_) => TextEditingController());
 
 /// 訪問者のひとことの [TextEditingController]。
@@ -38,11 +42,13 @@ final descriptionTextEditingController =
 
 final visitorLogControllerProvider = Provider.autoDispose<VisitorLogController>(
   (ref) => VisitorLogController(
-    service: ref.watch(visitorLogServiceProvider),
+    visitorLogService: ref.watch(visitorLogServiceProvider),
+    firebaseStorageService: ref.watch(firebaseStorageServiceProvider),
     pickedImageController: ref.watch(pickedImageDataStateProvider.notifier),
     scaffoldMessengerController: ref.watch(scaffoldMessengerControllerProvider),
-    overlayLoadingController:
-        ref.watch(showOverlayLoadingStateProvider.notifier),
+    overlayLoadingController: ref.watch(
+      showOverlayLoadingOnVisitorLogCreateDialogStateProvider.notifier,
+    ),
   ),
 );
 
@@ -51,16 +57,20 @@ final visitorLogControllerProvider = Provider.autoDispose<VisitorLogController>(
 /// UI とモデルの分離を明確にするために、やや冗長だが、このような構成にしている。
 class VisitorLogController {
   VisitorLogController({
-    required VisitorLogService service,
+    required VisitorLogService visitorLogService,
+    required FirebaseStorageService firebaseStorageService,
     required StateController<Uint8List?> pickedImageController,
     required ScaffoldMessengerController scaffoldMessengerController,
     required StateController<bool> overlayLoadingController,
-  })  : _service = service,
+  })  : _visitorLogService = visitorLogService,
+        _firebaseStorageService = firebaseStorageService,
         _pickedImageDataController = pickedImageController,
         _scaffoldMessengerController = scaffoldMessengerController,
         _overlayLoadingController = overlayLoadingController;
 
-  final VisitorLogService _service;
+  final VisitorLogService _visitorLogService;
+
+  final FirebaseStorageService _firebaseStorageService;
 
   final StateController<Uint8List?> _pickedImageDataController;
 
@@ -89,16 +99,30 @@ class VisitorLogController {
   Future<void> createVisitorLog({
     required String visitorName,
     required String description,
-    required String imageUrl,
+    required Uint8List imageData,
   }) async {
+    if (visitorName.isEmpty) {
+      _scaffoldMessengerController.showSnackBar('訪問者の名前を入力してください。');
+      return;
+    }
+    if (description.isEmpty) {
+      _scaffoldMessengerController.showSnackBar('思い出やひとことを入力してください。');
+      return;
+    }
     try {
-      await _service.create(
+      _overlayLoadingController.update((state) => true);
+      final imageUrl =
+          await _firebaseStorageService.uploadImage(imageData: imageData);
+      await _visitorLogService.create(
         visitorName: visitorName,
         description: description,
         imageUrl: imageUrl,
       );
+      _scaffoldMessengerController.showSnackBar('訪問記録を投稿しました！');
     } on FirebaseException catch (e) {
       _scaffoldMessengerController.showSnackBarByFirebaseException(e);
+    } on Exception catch (e) {
+      _scaffoldMessengerController.showSnackBarByException(e);
     } finally {
       _overlayLoadingController.update((state) => false);
     }
@@ -107,7 +131,7 @@ class VisitorLogController {
   /// 指定した [VisitorLog] を削除する。
   Future<void> delete({required VisitorLog visitorLog}) async {
     try {
-      await _service.delete(visitorLog: visitorLog);
+      await _visitorLogService.delete(visitorLog: visitorLog);
     } on FirebaseException catch (e) {
       _scaffoldMessengerController.showSnackBarByFirebaseException(e);
     } finally {

@@ -18,6 +18,7 @@ dependencies:
   gap: ^2.0.1
   hooks_riverpod: ^2.3.4
   image_picker_web: ^3.0.0+1
+  intl: ^0.18.0
   json_annotation: ^4.8.0
   simple_logger: ^1.9.0+2
 
