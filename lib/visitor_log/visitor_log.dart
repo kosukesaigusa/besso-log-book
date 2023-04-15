@@ -28,7 +28,6 @@ class VisitorLogService {
     required String description,
     required String imageUrl,
   }) async {
-    // TODO: 仮実装。
     final visitorLog = VisitorLog(
       visitorName: visitorName,
       description: description,
@@ -39,7 +38,6 @@ class VisitorLogService {
 
   /// 指定した [VisitorLog] を削除する。
   Future<void> delete({required VisitorLog visitorLog}) async {
-    // TODO: 仮実装。
     await _visitorLogRepository.deleteVisitorLog(
       visitorLogId: visitorLog.visitorLogId,
     );
