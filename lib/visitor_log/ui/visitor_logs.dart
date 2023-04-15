@@ -39,22 +39,25 @@ class VisitorLogsPage extends ConsumerWidget {
             if (visitorLogId != null && isShowDialog.state) {
               final log = visitorLogs.firstWhere(
                 (visitorLog) => visitorLog.visitorLogId == visitorLogId,
+                // 不適切なvisitorLogIdが入力されていた場合
                 orElse: () => const VisitorLog(),
               );
 
-              WidgetsBinding.instance.addPostFrameCallback((_) async {
-                // 再描画時にはダイアログが表示されないようにする
-                isShowDialog.state = false;
-                await showDialog<void>(
-                  context: context,
-                  builder: (context) {
-                    return VisitorLogDialog(
-                      visitorLogDialogType:
-                          VisitorLogDialogType.read(visitorLog: log),
-                    );
-                  },
-                );
-              });
+              if (log.visitorLogId.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  // 再描画時にはダイアログが表示されないようにする
+                  isShowDialog.state = false;
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) {
+                      return VisitorLogDialog(
+                        visitorLogDialogType:
+                            VisitorLogDialogType.read(visitorLog: log),
+                      );
+                    },
+                  );
+                });
+              }
             }
 
             return Scaffold(
