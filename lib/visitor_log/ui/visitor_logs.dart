@@ -7,7 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../firestore/firestore_models/visitor_log.dart';
 import '../../firestore/firestore_repository/visitor_log.dart';
 import '../../scaffold_messenger_controller.dart';
-import 'visitor_log_create_dialog.dart';
+import 'visitor_log_dialog.dart';
 
 final visitorLogsStreamProvider =
     StreamProvider.autoDispose<List<VisitorLog>>((ref) {
@@ -39,7 +39,9 @@ class VisitorLogsPage extends ConsumerWidget {
                 showDialog<void>(
                   context: context,
                   builder: (context) {
-                    return const VisitorLogCreateDialog();
+                    return const VisitorLogDialog(
+                      visitorLogDialogType: VisitorLogDialogType.create(),
+                    );
                   },
                 );
               });
@@ -160,7 +162,9 @@ class VisitorLogsPage extends ConsumerWidget {
                     .read(scaffoldMessengerControllerProvider)
                     .showDialogByBuilder<void>(
                       barrierDismissible: false,
-                      builder: (context) => const VisitorLogCreateDialog(),
+                      builder: (context) => const VisitorLogDialog(
+                        visitorLogDialogType: VisitorLogDialogType.create(),
+                      ),
                     ),
                 child: const Icon(Icons.camera_alt),
               ),

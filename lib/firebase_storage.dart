@@ -20,7 +20,7 @@ class FirebaseStorageService {
   Future<String> uploadImage({required Uint8List imageData}) async {
     final fileName = '${_getFormattedDate()}_${imageData.hashCode}.jpg';
     final ref = _storageRef.child(fileName);
-    await ref.putData(imageData);
+    await ref.putData(imageData, SettableMetadata(contentType: 'image/jpeg'));
     return ref.getDownloadURL();
   }
 

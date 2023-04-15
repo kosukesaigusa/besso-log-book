@@ -103,11 +103,9 @@ class VisitorLogController {
   }) async {
     if (visitorName.isEmpty) {
       _scaffoldMessengerController.showSnackBar('訪問者の名前を入力してください。');
-      return;
     }
     if (description.isEmpty) {
       _scaffoldMessengerController.showSnackBar('思い出やひとことを入力してください。');
-      return;
     }
     try {
       _overlayLoadingController.update((state) => true);
