@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
 
-import '../../choose_image/ui/choose_image.dart';
+import '../../pick_image/ui/pick_image.dart';
 
 @RoutePage()
 class VisitorLogCreatePage extends StatelessWidget {
@@ -17,7 +17,7 @@ class VisitorLogCreatePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: const [
-            ChooseImage(),
+            PickImage(),
           ],
         ),
       ),
