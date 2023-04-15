@@ -40,6 +40,9 @@ final visitorNameTextEditingController =
 final descriptionTextEditingController =
     Provider.autoDispose<TextEditingController>((_) => TextEditingController());
 
+/// クエリパラメータによる開かれるダイアログの表示を管理
+final showVisitorLogDialogStateProvider = StateProvider<bool>((_) => true);
+
 final visitorLogControllerProvider = Provider.autoDispose<VisitorLogController>(
   (ref) => VisitorLogController(
     visitorLogService: ref.watch(visitorLogServiceProvider),
