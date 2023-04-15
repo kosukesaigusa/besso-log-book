@@ -43,9 +43,15 @@ class VisitorLogDialog extends ConsumerWidget {
                     child: Image.network(visitorLog.imageUrl),
                   ),
                   const Gap(16),
-                  const _VisitorNameTextField(enabled: false),
+                  _VisitorNameTextField(
+                    enabled: false,
+                    text: visitorLog.visitorName,
+                  ),
                   const Gap(16),
-                  const _DescriptionTextField(enabled: false),
+                  _DescriptionTextField(
+                    enabled: false,
+                    text: visitorLog.description,
+                  ),
                 ],
                 create: () {
                   final pickedImageData =
@@ -117,15 +123,36 @@ class VisitorLogDialog extends ConsumerWidget {
   }
 }
 
-class _VisitorNameTextField extends HookConsumerWidget {
-  const _VisitorNameTextField({required this.enabled});
+class _VisitorNameTextField extends StatefulHookConsumerWidget {
+  const _VisitorNameTextField({
+    required this.enabled,
+    this.text,
+  }) : assert(
+          (enabled || text != null) || (!enabled && text == null),
+          'enabledがfalseの場合のみtextを入れてください',
+        );
 
   final bool enabled;
+  final String? text;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_VisitorNameTextField> createState() =>
+      _VisitorNameTextFieldState();
+}
+
+class _VisitorNameTextFieldState extends ConsumerState<_VisitorNameTextField> {
+  @override
+  void initState() {
+    if (widget.text != null) {
+      ref.read(visitorNameTextEditingController).text = widget.text!;
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return TextField(
-      enabled: enabled,
+      enabled: widget.enabled,
       controller: ref.watch(visitorNameTextEditingController),
       decoration: InputDecoration(
         labelText: '訪問者の名前',
@@ -137,15 +164,36 @@ class _VisitorNameTextField extends HookConsumerWidget {
   }
 }
 
-class _DescriptionTextField extends HookConsumerWidget {
-  const _DescriptionTextField({required this.enabled});
+class _DescriptionTextField extends StatefulHookConsumerWidget {
+  const _DescriptionTextField({
+    required this.enabled,
+    this.text,
+  }) : assert(
+          (enabled || text != null) || (!enabled && text == null),
+          'enabledがfalseの場合のみtextを入れてください',
+        );
 
   final bool enabled;
+  final String? text;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<_DescriptionTextField> createState() =>
+      _DescriptionTextFieldState();
+}
+
+class _DescriptionTextFieldState extends ConsumerState<_DescriptionTextField> {
+  @override
+  void initState() {
+    if (widget.text != null) {
+      ref.read(descriptionTextEditingController).text = widget.text!;
+    }
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return TextField(
-      enabled: false,
+      enabled: widget.enabled,
       controller: ref.watch(descriptionTextEditingController),
       keyboardType: TextInputType.multiline,
       minLines: 2,

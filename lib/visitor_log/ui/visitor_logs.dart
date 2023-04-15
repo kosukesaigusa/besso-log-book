@@ -33,14 +33,19 @@ class VisitorLogsPage extends ConsumerWidget {
 
     return ref.watch(visitorLogsStreamProvider).when(
           data: (visitorLogs) {
-            // todo show dialog
             if (visitorLogId != null) {
+              final log = visitorLogs.firstWhere(
+                (visitorLog) => visitorLog.visitorLogId == visitorLogId,
+                orElse: () => const VisitorLog(),
+              );
+
               WidgetsBinding.instance.addPostFrameCallback((_) {
                 showDialog<void>(
                   context: context,
                   builder: (context) {
-                    return const VisitorLogDialog(
-                      visitorLogDialogType: VisitorLogDialogType.create(),
+                    return VisitorLogDialog(
+                      visitorLogDialogType:
+                          VisitorLogDialogType.read(visitorLog: log),
                     );
                   },
                 );
@@ -102,7 +107,17 @@ class VisitorLogsPage extends ConsumerWidget {
                             Expanded(
                               child: GestureDetector(
                                 onTap: () {
-                                  // todo show dialog
+                                  showDialog<void>(
+                                    context: context,
+                                    builder: (context) {
+                                      return VisitorLogDialog(
+                                        visitorLogDialogType:
+                                            VisitorLogDialogType.read(
+                                          visitorLog: log,
+                                        ),
+                                      );
+                                    },
+                                  );
                                 },
                                 child: Center(
                                   child: Padding(
