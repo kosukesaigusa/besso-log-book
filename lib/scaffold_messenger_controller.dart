@@ -4,31 +4,23 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 
 import './string.dart';
 
-final navigatorKeyProvider = Provider((_) => GlobalKey<NavigatorState>());
-
-final scaffoldMessengerKeyProvider =
+final mainScaffoldMessengerKeyProvider =
     Provider((_) => GlobalKey<ScaffoldMessengerState>());
 
-final scaffoldMessengerControllerProvider = Provider.autoDispose(
+final mainScaffoldMessengerControllerProvider =
+    Provider.autoDispose<ScaffoldMessengerController>(
   (ref) => ScaffoldMessengerController(
-    navigatorKey: ref.watch(navigatorKeyProvider),
-    scaffoldMessengerKey: ref.watch(scaffoldMessengerKeyProvider),
+    scaffoldMessengerKey: ref.watch(mainScaffoldMessengerKeyProvider),
   ),
 );
 
 /// ツリー上部の [ScaffoldMessenger] 上でスナックバーやダイアログの表示を操作する。
 class ScaffoldMessengerController {
   ScaffoldMessengerController({
-    required GlobalKey<NavigatorState> navigatorKey,
     required GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey,
-  })  : _navigatorKey = navigatorKey,
-        _scaffoldMessengerKey = scaffoldMessengerKey;
-
-  final GlobalKey<NavigatorState> _navigatorKey;
+  }) : _scaffoldMessengerKey = scaffoldMessengerKey;
 
   final GlobalKey<ScaffoldMessengerState> _scaffoldMessengerKey;
-
-  BuildContext get _currentContext => _navigatorKey.currentContext!;
 
   ScaffoldMessengerState get _currentState =>
       _scaffoldMessengerKey.currentState!;
@@ -38,34 +30,6 @@ class ScaffoldMessengerController {
   static const _defaultSnackBarDuration = Duration(seconds: 3);
 
   static const _generalExceptionMessage = 'エラーが発生しました。';
-
-  /// [showDialog] で指定したビルダー関数を返す。
-  Future<T?> showDialogByBuilder<T>({
-    required Widget Function(BuildContext) builder,
-    bool barrierDismissible = true,
-  }) {
-    return showDialog<T>(
-      context: _currentContext,
-      barrierDismissible: barrierDismissible,
-      builder: builder,
-    );
-  }
-
-  /// [showModalBottomSheet] で指定したビルダー関数を返す。
-  Future<T?> showModalBottomSheetByBuilder<T>({
-    required Widget Function(BuildContext) builder,
-  }) async {
-    return showModalBottomSheet<T>(
-      context: _currentContext,
-      builder: builder,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(4),
-          topRight: Radius.circular(4),
-        ),
-      ),
-    );
-  }
 
   /// [showSnackBar] でスナックバーを表示する。
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason> showSnackBar(

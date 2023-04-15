@@ -5,6 +5,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'firebase_options.dart';
 import 'loading/loading.dart';
 import 'loading/ui/overlay_loading.dart';
+import 'navigator_controller.dart';
 import 'router/router.dart';
 import 'scaffold_messenger_controller.dart';
 
@@ -29,12 +30,12 @@ class App extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      scaffoldMessengerKey: ref.watch(scaffoldMessengerKeyProvider),
+      scaffoldMessengerKey: ref.watch(mainScaffoldMessengerKeyProvider),
       routerConfig: ref.watch(_appRouterProvider).config(),
       builder: (context, child) {
         final isLoading = ref.watch(showOverlayLoadingStateProvider);
         return Navigator(
-          key: ref.watch(navigatorKeyProvider),
+          key: ref.watch(mainNavigatorKeyProvider),
           onPopPage: (_, __) => false,
           pages: [
             MaterialPage<Widget>(

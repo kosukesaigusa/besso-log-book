@@ -24,6 +24,19 @@ final visitorLogsStreamProvider =
   return visitorLogService.subscribe();
 });
 
+/// [VisitorLog] ダイアログ上における scaffoldMessengerKey。
+final scaffoldMessengerKeyOnVisitorLogDialogProvider =
+    Provider.autoDispose((_) => GlobalKey<ScaffoldMessengerState>());
+
+/// [VisitorLog] ダイアログ上における [ScaffoldMessengerController]。
+final scaffoldMessengerControllerOnVisitorLogDialogProvider =
+    Provider.autoDispose<ScaffoldMessengerController>(
+  (ref) => ScaffoldMessengerController(
+    scaffoldMessengerKey:
+        ref.watch(scaffoldMessengerKeyOnVisitorLogDialogProvider),
+  ),
+);
+
 /// 選択された画像データ。
 final pickedImageDataStateProvider =
     StateProvider.autoDispose<Uint8List?>((_) => null);
@@ -48,7 +61,8 @@ final visitorLogControllerProvider = Provider.autoDispose<VisitorLogController>(
     visitorLogService: ref.watch(visitorLogServiceProvider),
     firebaseStorageService: ref.watch(firebaseStorageServiceProvider),
     pickedImageController: ref.watch(pickedImageDataStateProvider.notifier),
-    scaffoldMessengerController: ref.watch(scaffoldMessengerControllerProvider),
+    scaffoldMessengerController:
+        ref.watch(scaffoldMessengerControllerOnVisitorLogDialogProvider),
     overlayLoadingController: ref.watch(
       showOverlayLoadingOnVisitorLogCreateDialogStateProvider.notifier,
     ),
@@ -99,16 +113,18 @@ class VisitorLogController {
   }
 
   /// [VisitorLog] を作成する。
-  Future<void> createVisitorLog({
+  Future<bool> createVisitorLog({
     required String visitorName,
     required String description,
     required Uint8List imageData,
   }) async {
     if (visitorName.isEmpty) {
       _scaffoldMessengerController.showSnackBar('訪問者の名前を入力してください。');
+      return false;
     }
     if (description.isEmpty) {
       _scaffoldMessengerController.showSnackBar('思い出やひとことを入力してください。');
+      return false;
     }
     try {
       _overlayLoadingController.update((state) => true);
@@ -119,11 +135,13 @@ class VisitorLogController {
         description: description,
         imageUrl: imageUrl,
       );
-      _scaffoldMessengerController.showSnackBar('訪問記録を投稿しました！');
+      return true;
     } on FirebaseException catch (e) {
       _scaffoldMessengerController.showSnackBarByFirebaseException(e);
+      return false;
     } on Exception catch (e) {
       _scaffoldMessengerController.showSnackBarByException(e);
+      return false;
     } finally {
       _overlayLoadingController.update((state) => false);
     }
