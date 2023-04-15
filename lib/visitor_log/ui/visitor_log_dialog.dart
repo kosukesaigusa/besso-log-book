@@ -43,9 +43,9 @@ class VisitorLogDialog extends ConsumerWidget {
                     child: Image.network(visitorLog.imageUrl),
                   ),
                   const Gap(16),
-                  const _VisitorNameTextField(readOnly: true),
+                  const _VisitorNameTextField(enabled: false),
                   const Gap(16),
-                  const _DescriptionTextField(readOnly: true),
+                  const _DescriptionTextField(enabled: false),
                 ],
                 create: () {
                   final pickedImageData =
@@ -83,9 +83,9 @@ class VisitorLogDialog extends ConsumerWidget {
                         ),
                       ),
                       const Gap(16),
-                      const _VisitorNameTextField(readOnly: false),
+                      const _VisitorNameTextField(enabled: true),
                       const Gap(16),
-                      const _DescriptionTextField(readOnly: false),
+                      const _DescriptionTextField(enabled: true),
                       const Gap(16),
                       ElevatedButton(
                         onPressed: () async {
@@ -118,14 +118,14 @@ class VisitorLogDialog extends ConsumerWidget {
 }
 
 class _VisitorNameTextField extends HookConsumerWidget {
-  const _VisitorNameTextField({required this.readOnly});
+  const _VisitorNameTextField({required this.enabled});
 
-  final bool readOnly;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
-      readOnly: readOnly,
+      enabled: enabled,
       controller: ref.watch(visitorNameTextEditingController),
       decoration: InputDecoration(
         labelText: '訪問者の名前',
@@ -138,14 +138,14 @@ class _VisitorNameTextField extends HookConsumerWidget {
 }
 
 class _DescriptionTextField extends HookConsumerWidget {
-  const _DescriptionTextField({required this.readOnly});
+  const _DescriptionTextField({required this.enabled});
 
-  final bool readOnly;
+  final bool enabled;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
-      readOnly: readOnly,
+      enabled: false,
       controller: ref.watch(descriptionTextEditingController),
       keyboardType: TextInputType.multiline,
       minLines: 2,
