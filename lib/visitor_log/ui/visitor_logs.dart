@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../firestore/firestore_models/visitor_log.dart';
 import '../../firestore/firestore_repository/visitor_log.dart';
 import '../../scaffold_messenger_controller.dart';
+import 'visitor_log_controller.dart';
 import 'visitor_log_dialog.dart';
 
 final visitorLogsStreamProvider =
@@ -33,14 +34,18 @@ class VisitorLogsPage extends ConsumerWidget {
 
     return ref.watch(visitorLogsStreamProvider).when(
           data: (visitorLogs) {
-            if (visitorLogId != null) {
+            final isShowDialog =
+                ref.read(showVisitorLogDialogStateProvider.notifier);
+            if (visitorLogId != null && isShowDialog.state) {
               final log = visitorLogs.firstWhere(
                 (visitorLog) => visitorLog.visitorLogId == visitorLogId,
                 orElse: () => const VisitorLog(),
               );
 
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                showDialog<void>(
+              WidgetsBinding.instance.addPostFrameCallback((_) async {
+                // 再描画時にはダイアログが表示されないようにする
+                isShowDialog.state = false;
+                await showDialog<void>(
                   context: context,
                   builder: (context) {
                     return VisitorLogDialog(
