@@ -28,6 +28,9 @@ class ChooseImage extends ConsumerWidget {
                   future: chooseImageController.initializeCameraController,
                   builder: (context, snapshot) {
                     if (snapshot.connectionState == ConnectionState.done) {
+                      // TODO: 一度写真を撮影した後に、その画像データをメモリから
+                      // 破棄したとき、CameraPreview が固定画像になってしまうので
+                      // その原因を調査して対応する。
                       return CameraPreview(ref.watch(cameraControllerProvider));
                     } else {
                       return const Center(child: CircularProgressIndicator());
@@ -50,7 +53,7 @@ class ChooseImage extends ConsumerWidget {
                   .read(chooseImageControllerProvider)
                   .chooseImage(ImageSource.camera)
               : ref.read(chooseImageControllerProvider).resetChosenImage(),
-          child: const Text('カメラを起動して写真を撮る'),
+          child: Text(chosenImageData == null ? '写真を撮る' : '選択し直す'),
         ),
       ],
     );
