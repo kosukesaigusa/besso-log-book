@@ -125,7 +125,7 @@ class _VisitorNameTextField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
-      readOnly: true,
+      readOnly: readOnly,
       controller: ref.watch(visitorNameTextEditingController),
       decoration: InputDecoration(
         labelText: '訪問者の名前',
@@ -145,7 +145,7 @@ class _DescriptionTextField extends HookConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return TextField(
-      readOnly: true,
+      readOnly: readOnly,
       controller: ref.watch(descriptionTextEditingController),
       keyboardType: TextInputType.multiline,
       minLines: 2,
