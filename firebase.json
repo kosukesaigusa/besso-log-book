@@ -4,12 +4,8 @@
     "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
-        "source": "/visitorLogs/**",
+        "source": "/share/**",
         "function": "generateDynamicMetaTags"
-      },
-      {
-        "source": "**",
-        "destination": "/index.html"
       }
     ]
   },
