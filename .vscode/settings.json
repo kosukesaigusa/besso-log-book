@@ -9,5 +9,6 @@
     "**/.fvm": true
   },
   "dart.runPubGetOnPubspecChanges": "never",
+  "eslint.workingDirectories": ["./functions"],
   "cSpell.words": ["besso", "bools", "combinators"]
 }
