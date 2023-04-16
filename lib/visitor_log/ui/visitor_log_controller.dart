@@ -95,6 +95,9 @@ class VisitorLogController {
 
   final StateController<bool> _overlayLoadingController;
 
+  /// 作成中かどうか。連打対策の目的。
+  bool _isSending = false;
+
   /// [ImagePickerWeb] を使用して、端末から画像を選択して返す。
   Future<void> pickImage() async {
     final imageData = await ImagePickerWeb.getImageAsBytes();
@@ -118,15 +121,19 @@ class VisitorLogController {
     required String description,
     required Uint8List imageData,
   }) async {
-    if (visitorName.isEmpty) {
-      _scaffoldMessengerController.showSnackBar('訪問者の名前を入力してください。');
-      return false;
-    }
-    if (description.isEmpty) {
-      _scaffoldMessengerController.showSnackBar('思い出やひとことを入力してください。');
+    if (_isSending) {
       return false;
     }
     try {
+      _isSending = true;
+      if (visitorName.isEmpty) {
+        _scaffoldMessengerController.showSnackBar('訪問者の名前を入力してください。');
+        return false;
+      }
+      if (description.isEmpty) {
+        _scaffoldMessengerController.showSnackBar('思い出やひとことを入力してください。');
+        return false;
+      }
       _overlayLoadingController.update((state) => true);
       final imageUrl =
           await _firebaseStorageService.uploadImage(imageData: imageData);
@@ -143,6 +150,7 @@ class VisitorLogController {
       _scaffoldMessengerController.showSnackBarByException(e);
       return false;
     } finally {
+      _isSending = false;
       _overlayLoadingController.update((state) => false);
     }
   }
