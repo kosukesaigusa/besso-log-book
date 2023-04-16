@@ -20,6 +20,7 @@ dependencies:
   image_picker_web: ^3.0.0+1
   intl: ^0.18.0
   json_annotation: ^4.8.0
+  photo_view: ^0.14.0
   simple_logger: ^1.9.0+2
 
 dev_dependencies:

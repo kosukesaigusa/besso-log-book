@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
 import '../../loading/ui/overlay_loading.dart';
@@ -44,7 +45,21 @@ class VisitorLogDialog extends ConsumerWidget {
                     read: (visitorLog) => [
                       SizedBox(
                         width: 96,
-                        child: Image.network(visitorLog.imageUrl),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (context) => _ExpandedImage(
+                                  imageWidget:
+                                      NetworkImage(visitorLog.imageUrl),
+                                ),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                          child: Image.network(visitorLog.imageUrl),
+                        ),
                       ),
                       const Gap(16),
                       _VisitorNameTextField(
@@ -105,7 +120,20 @@ class VisitorLogDialog extends ConsumerWidget {
                         ] else ...[
                           SizedBox(
                             width: 96,
-                            child: Image.memory(pickedImageData),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (context) => _ExpandedImage(
+                                        imageWidget:
+                                            MemoryImage(pickedImageData),
+                                      ),
+                                      fullscreenDialog: true,
+                                    ),
+                                  );
+                                },
+                                child: Image.memory(pickedImageData)),
                           ),
                           const Gap(4),
                           TextButton(
@@ -320,6 +348,45 @@ class _DeleteConfirmDialog extends StatelessWidget {
               ),
             )
           ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ExpandedImage extends StatefulWidget {
+  const _ExpandedImage({
+    required this.imageWidget,
+  });
+
+  final ImageProvider imageWidget;
+
+  @override
+  State<_ExpandedImage> createState() => _ExpandedImageState();
+}
+
+class _ExpandedImageState extends State<_ExpandedImage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: PhotoView(
+            imageProvider: widget.imageWidget,
+          ),
         ),
       ),
     );
