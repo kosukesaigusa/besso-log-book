@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
@@ -74,7 +75,8 @@ class VisitorLogDialog extends ConsumerWidget {
                               ),
                             );
                           },
-                          child: Image.network(visitorLog.imageUrl),
+                          child:
+                              CachedNetworkImage(imageUrl: visitorLog.imageUrl),
                         ),
                       ),
                       const Gap(16),

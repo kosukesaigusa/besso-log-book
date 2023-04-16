@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -157,8 +158,8 @@ class VisitorLogsPage extends ConsumerWidget {
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(8),
-                                                  child: Image.network(
-                                                    imageUrl,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageUrl,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
