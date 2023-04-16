@@ -7,6 +7,7 @@ import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
+import '../../firestore/union_timestamp.dart';
 import '../../loading/ui/overlay_loading.dart';
 import 'visitor_log_controller.dart';
 
@@ -34,7 +35,22 @@ class VisitorLogDialog extends ConsumerWidget {
       children: [
         AlertDialog(
           insetPadding: const EdgeInsets.all(16),
-          title: const Text('投稿'),
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Text('投稿'),
+              ...visitorLogDialogType.when(
+                read: (visitorLog) => [
+                  const Gap(16),
+                  Text(
+                    _toDateString(visitorLog.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+                create: () => const [],
+              ),
+            ],
+          ),
           content: SizedBox(
             width: min(MediaQuery.of(context).size.width, 480),
             child: SingleChildScrollView(
@@ -182,6 +198,17 @@ class VisitorLogDialog extends ConsumerWidget {
           const OverlayLoading(),
       ],
     );
+  }
+
+  String _toDateString(UnionTimestamp createdAt) {
+    final dateTime = createdAt.dateTime;
+    if (dateTime == null) {
+      return '';
+    }
+    final year = createdAt.dateTime!.year;
+    final month = createdAt.dateTime!.month;
+    final day = createdAt.dateTime!.day;
+    return '$year年$month月$day日';
   }
 }
 
