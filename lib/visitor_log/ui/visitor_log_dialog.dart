@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
@@ -10,6 +11,7 @@ import 'package:photo_view/photo_view.dart';
 import '../../firestore/firestore_models/visitor_log.dart';
 import '../../firestore/union_timestamp.dart';
 import '../../loading/ui/overlay_loading.dart';
+import '../../scaffold_messenger_controller.dart';
 import 'visitor_log_controller.dart';
 
 part 'visitor_log_dialog.freezed.dart';
@@ -89,6 +91,25 @@ class VisitorLogDialog extends ConsumerWidget {
                         enabled: false,
                         text: visitorLog.description,
                       ),
+                      const Gap(16),
+                      ElevatedButton.icon(
+                        onPressed: () async {
+                          final navigator = Navigator.of(context);
+                          final data = ClipboardData(
+                            text:
+                                'https://besso-log-book.web.app/share/?visitorLogId=${visitorLog.visitorLogId}',
+                          );
+                          await Clipboard.setData(data);
+                          navigator.pop();
+                          ref
+                              .read(mainScaffoldMessengerControllerProvider)
+                              // ignore: missing_whitespace_between_adjacent_strings
+                              .showSnackBar('クリップボードに URL をコピーしました！\n'
+                                  'SNS やメッセージアプリで友だちにシェアしよう！');
+                        },
+                        icon: const Icon(Icons.copy_outlined),
+                        label: const Text('この投稿をシェアする！'),
+                      ),
                       Align(
                         alignment: AlignmentDirectional.centerEnd,
                         child: IconButton(
@@ -139,19 +160,19 @@ class VisitorLogDialog extends ConsumerWidget {
                           SizedBox(
                             width: 96,
                             child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute<void>(
-                                      builder: (context) => _ExpandedImage(
-                                        imageWidget:
-                                            MemoryImage(pickedImageData),
-                                      ),
-                                      fullscreenDialog: true,
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute<void>(
+                                    builder: (context) => _ExpandedImage(
+                                      imageWidget: MemoryImage(pickedImageData),
                                     ),
-                                  );
-                                },
-                                child: Image.memory(pickedImageData)),
+                                    fullscreenDialog: true,
+                                  ),
+                                );
+                              },
+                              child: Image.memory(pickedImageData),
+                            ),
                           ),
                           const Gap(4),
                           TextButton(
