@@ -28,7 +28,7 @@ class App extends ConsumerWidget {
       title: 'Flutter 別荘 LogBook',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.brown,
       ),
       scaffoldMessengerKey: ref.watch(mainScaffoldMessengerKeyProvider),
       routerConfig: ref.watch(_appRouterProvider).config(),

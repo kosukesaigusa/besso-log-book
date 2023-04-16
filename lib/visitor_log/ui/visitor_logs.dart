@@ -63,7 +63,7 @@ class VisitorLogsPage extends ConsumerWidget {
             return Scaffold(
               appBar: AppBar(
                 title: const Text(
-                  'Welcome to flutter別荘',
+                  'Welcome to Flutter別荘',
                   style: TextStyle(
                     color: Colors.black,
                     fontStyle: FontStyle.italic,
@@ -180,7 +180,6 @@ class VisitorLogsPage extends ConsumerWidget {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.brown,
                 onPressed: () => ref
                     .read(mainNavigatorControllerProvider)
                     .showDialogByBuilder<void>(
