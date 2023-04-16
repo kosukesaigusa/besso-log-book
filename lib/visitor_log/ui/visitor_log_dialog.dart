@@ -38,19 +38,44 @@ class VisitorLogDialog extends ConsumerWidget {
       children: [
         AlertDialog(
           insetPadding: const EdgeInsets.all(16),
+          titlePadding: EdgeInsets.zero,
           title: Row(
-            crossAxisAlignment: CrossAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text('投稿'),
-              ...visitorLogDialogType.when(
-                read: (visitorLog) => [
-                  const Gap(16),
-                  Text(
-                    _toDateString(visitorLog.createdAt),
-                    style: Theme.of(context).textTheme.bodySmall,
+              Padding(
+                padding: const EdgeInsets.only(left: 24, top: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text('投稿'),
+                    ...visitorLogDialogType.when(
+                      read: (visitorLog) => [
+                        Text(
+                          _toDateString(visitorLog.createdAt),
+                          style: Theme.of(context).textTheme.bodySmall,
+                        ),
+                      ],
+                      create: () => const [],
+                    ),
+                  ],
+                ),
+              ),
+              InkWell(
+                borderRadius: BorderRadius.circular(90),
+                onTap: () => Navigator.of(context).pop(),
+                child: Container(
+                  width: 36,
+                  height: 36,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    shape: BoxShape.circle,
                   ),
-                ],
-                create: () => const [],
+                  child: const Icon(
+                    Icons.close_rounded,
+                    size: 24,
+                  ),
+                ),
               ),
             ],
           ),
