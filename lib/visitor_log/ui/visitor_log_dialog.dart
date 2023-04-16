@@ -1,11 +1,14 @@
 import 'dart:math';
 
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
+import 'package:photo_view/photo_view.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
+import '../../firestore/union_timestamp.dart';
 import '../../loading/ui/overlay_loading.dart';
 import 'visitor_log_controller.dart';
 
@@ -15,6 +18,7 @@ part 'visitor_log_dialog.freezed.dart';
 class VisitorLogDialogType with _$VisitorLogDialogType {
   const factory VisitorLogDialogType.read({required VisitorLog visitorLog}) =
       Read;
+
   const factory VisitorLogDialogType.create() = Create;
 }
 
@@ -32,7 +36,22 @@ class VisitorLogDialog extends ConsumerWidget {
       children: [
         AlertDialog(
           insetPadding: const EdgeInsets.all(16),
-          title: const Text('投稿'),
+          title: Row(
+            crossAxisAlignment: CrossAxisAlignment.end,
+            children: [
+              const Text('投稿'),
+              ...visitorLogDialogType.when(
+                read: (visitorLog) => [
+                  const Gap(16),
+                  Text(
+                    _toDateString(visitorLog.createdAt),
+                    style: Theme.of(context).textTheme.bodySmall,
+                  ),
+                ],
+                create: () => const [],
+              ),
+            ],
+          ),
           content: SizedBox(
             width: min(MediaQuery.of(context).size.width, 480),
             child: SingleChildScrollView(
@@ -43,7 +62,22 @@ class VisitorLogDialog extends ConsumerWidget {
                     read: (visitorLog) => [
                       SizedBox(
                         width: 96,
-                        child: Image.network(visitorLog.imageUrl),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute<void>(
+                                builder: (context) => _ExpandedImage(
+                                  imageWidget:
+                                      NetworkImage(visitorLog.imageUrl),
+                                ),
+                                fullscreenDialog: true,
+                              ),
+                            );
+                          },
+                          child:
+                              CachedNetworkImage(imageUrl: visitorLog.imageUrl),
+                        ),
                       ),
                       const Gap(16),
                       _VisitorNameTextField(
@@ -54,6 +88,30 @@ class VisitorLogDialog extends ConsumerWidget {
                       _DescriptionTextField(
                         enabled: false,
                         text: visitorLog.description,
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: IconButton(
+                          onPressed: () async {
+                            await showDialog<void>(
+                              context: context,
+                              builder: (_) {
+                                return _DeleteConfirmDialog(
+                                  onConfirmed: () async {
+                                    final navigator = Navigator.of(context);
+                                    final isSucceeded = await ref
+                                        .read(visitorLogControllerProvider)
+                                        .delete(visitorLog: visitorLog);
+                                    if (isSucceeded) {
+                                      navigator.pop();
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
                       ),
                     ],
                     create: () {
@@ -80,7 +138,20 @@ class VisitorLogDialog extends ConsumerWidget {
                         ] else ...[
                           SizedBox(
                             width: 96,
-                            child: Image.memory(pickedImageData),
+                            child: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute<void>(
+                                      builder: (context) => _ExpandedImage(
+                                        imageWidget:
+                                            MemoryImage(pickedImageData),
+                                      ),
+                                      fullscreenDialog: true,
+                                    ),
+                                  );
+                                },
+                                child: Image.memory(pickedImageData)),
                           ),
                           const Gap(4),
                           TextButton(
@@ -129,6 +200,17 @@ class VisitorLogDialog extends ConsumerWidget {
           const OverlayLoading(),
       ],
     );
+  }
+
+  String _toDateString(UnionTimestamp createdAt) {
+    final dateTime = createdAt.dateTime;
+    if (dateTime == null) {
+      return '';
+    }
+    final year = createdAt.dateTime!.year;
+    final month = createdAt.dateTime!.month;
+    final day = createdAt.dateTime!.day;
+    return '$year年$month月$day日';
   }
 }
 
@@ -212,6 +294,129 @@ class _DescriptionTextFieldState extends ConsumerState<_DescriptionTextField> {
         fillColor: Colors.grey[200],
         border: InputBorder.none,
         filled: true,
+      ),
+    );
+  }
+}
+
+class _DeleteConfirmDialog extends StatelessWidget {
+  const _DeleteConfirmDialog({
+    required this.onConfirmed,
+  });
+
+  final VoidCallback onConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: SizedBox(
+        width: min(MediaQuery.of(context).size.width, 440),
+        height: 154,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 24,
+            ),
+            SizedBox(
+              height: 60,
+              child: Center(
+                child: Text(
+                  '投稿を削除しますか？',
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      child: Text(
+                        'キャンセル',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: Colors.grey),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 48,
+                    color: Colors.grey,
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      child: Text(
+                        '削除する',
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                              color: Colors.red,
+                            ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        onConfirmed();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ExpandedImage extends StatefulWidget {
+  const _ExpandedImage({
+    required this.imageWidget,
+  });
+
+  final ImageProvider imageWidget;
+
+  @override
+  State<_ExpandedImage> createState() => _ExpandedImageState();
+}
+
+class _ExpandedImageState extends State<_ExpandedImage> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        elevation: 0,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
+      ),
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: PhotoView(
+            imageProvider: widget.imageWidget,
+          ),
+        ),
       ),
     );
   }

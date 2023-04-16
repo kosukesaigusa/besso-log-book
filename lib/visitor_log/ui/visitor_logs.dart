@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 
@@ -39,28 +40,31 @@ class VisitorLogsPage extends ConsumerWidget {
             if (visitorLogId != null && isShowDialog.state) {
               final log = visitorLogs.firstWhere(
                 (visitorLog) => visitorLog.visitorLogId == visitorLogId,
+                // 不適切なvisitorLogIdが入力されていた場合
                 orElse: () => const VisitorLog(),
               );
 
-              WidgetsBinding.instance.addPostFrameCallback((_) async {
-                // 再描画時にはダイアログが表示されないようにする
-                isShowDialog.state = false;
-                await showDialog<void>(
-                  context: context,
-                  builder: (context) {
-                    return VisitorLogDialog(
-                      visitorLogDialogType:
-                          VisitorLogDialogType.read(visitorLog: log),
-                    );
-                  },
-                );
-              });
+              if (log.visitorLogId.isNotEmpty) {
+                WidgetsBinding.instance.addPostFrameCallback((_) async {
+                  // 再描画時にはダイアログが表示されないようにする
+                  isShowDialog.state = false;
+                  await showDialog<void>(
+                    context: context,
+                    builder: (context) {
+                      return VisitorLogDialog(
+                        visitorLogDialogType:
+                            VisitorLogDialogType.read(visitorLog: log),
+                      );
+                    },
+                  );
+                });
+              }
             }
 
             return Scaffold(
               appBar: AppBar(
                 title: const Text(
-                  'Welcome to flutter別荘',
+                  'Welcome to Flutter別荘',
                   style: TextStyle(
                     color: Colors.black,
                     fontStyle: FontStyle.italic,
@@ -154,8 +158,8 @@ class VisitorLogsPage extends ConsumerWidget {
                                                 child: Padding(
                                                   padding:
                                                       const EdgeInsets.all(8),
-                                                  child: Image.network(
-                                                    imageUrl,
+                                                  child: CachedNetworkImage(
+                                                    imageUrl: imageUrl,
                                                     fit: BoxFit.cover,
                                                   ),
                                                 ),
@@ -177,7 +181,6 @@ class VisitorLogsPage extends ConsumerWidget {
                 ),
               ),
               floatingActionButton: FloatingActionButton(
-                backgroundColor: Colors.brown,
                 onPressed: () => ref
                     .read(mainNavigatorControllerProvider)
                     .showDialogByBuilder<void>(
