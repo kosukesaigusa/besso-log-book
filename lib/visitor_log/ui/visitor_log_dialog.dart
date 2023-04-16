@@ -89,7 +89,7 @@ class VisitorLogDialog extends ConsumerWidget {
                     read: (visitorLog) => [
                       SizedBox(
                         width: 96,
-                        child: GestureDetector(
+                        child: InkWell(
                           onTap: () {
                             Navigator.push(
                               context,
@@ -184,7 +184,7 @@ class VisitorLogDialog extends ConsumerWidget {
                         ] else ...[
                           SizedBox(
                             width: 96,
-                            child: GestureDetector(
+                            child: InkWell(
                               onTap: () {
                                 Navigator.push(
                                   context,
@@ -455,7 +455,7 @@ class _ExpandedImageState extends State<_ExpandedImage> {
         ),
       ),
       body: Center(
-        child: GestureDetector(
+        child: InkWell(
           onTap: () {
             Navigator.pop(context);
           },

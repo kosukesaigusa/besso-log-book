@@ -114,7 +114,7 @@ class VisitorLogsPage extends ConsumerWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Expanded(
-                              child: GestureDetector(
+                              child: InkWell(
                                 onTap: () {
                                   showDialog<void>(
                                     context: context,
