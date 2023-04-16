@@ -95,7 +95,7 @@ class VisitorLogDialog extends ConsumerWidget {
                               context,
                               MaterialPageRoute<void>(
                                 builder: (context) => _ExpandedImage(
-                                  imageWidget:
+                                  imageProvider:
                                       NetworkImage(visitorLog.imageUrl),
                                 ),
                                 fullscreenDialog: true,
@@ -107,13 +107,11 @@ class VisitorLogDialog extends ConsumerWidget {
                         ),
                       ),
                       const Gap(16),
-                      _VisitorNameTextField(
-                        enabled: false,
+                      _VisitorNameTextField.readOnly(
                         text: visitorLog.visitorName,
                       ),
                       const Gap(16),
-                      _DescriptionTextField(
-                        enabled: false,
+                      _DescriptionTextField.readOnly(
                         text: visitorLog.description,
                       ),
                       const Gap(16),
@@ -190,7 +188,9 @@ class VisitorLogDialog extends ConsumerWidget {
                                   context,
                                   MaterialPageRoute<void>(
                                     builder: (context) => _ExpandedImage(
-                                      imageWidget: MemoryImage(pickedImageData),
+                                      imageProvider: MemoryImage(
+                                        pickedImageData,
+                                      ),
                                     ),
                                     fullscreenDialog: true,
                                   ),
@@ -211,9 +211,9 @@ class VisitorLogDialog extends ConsumerWidget {
                             ),
                           ),
                           const Gap(16),
-                          const _VisitorNameTextField(enabled: true),
+                          const _VisitorNameTextField(),
                           const Gap(16),
-                          const _DescriptionTextField(enabled: true),
+                          const _DescriptionTextField(),
                           const Gap(16),
                           ElevatedButton(
                             onPressed: () async {
@@ -261,13 +261,13 @@ class VisitorLogDialog extends ConsumerWidget {
 }
 
 class _VisitorNameTextField extends StatefulHookConsumerWidget {
-  const _VisitorNameTextField({
-    required this.enabled,
-    this.text,
-  }) : assert(
-          (enabled || text != null) || (!enabled && text == null),
-          'enabledがfalseの場合のみtextを入れてください',
-        );
+  const _VisitorNameTextField()
+      : enabled = true,
+        text = '';
+
+  const _VisitorNameTextField.readOnly({
+    required this.text,
+  }) : enabled = false;
 
   final bool enabled;
   final String? text;
@@ -302,16 +302,16 @@ class _VisitorNameTextFieldState extends ConsumerState<_VisitorNameTextField> {
 }
 
 class _DescriptionTextField extends StatefulHookConsumerWidget {
-  const _DescriptionTextField({
-    required this.enabled,
-    this.text,
-  }) : assert(
-          (enabled || text != null) || (!enabled && text == null),
-          'enabledがfalseの場合のみtextを入れてください',
-        );
+  const _DescriptionTextField()
+      : enabled = true,
+        text = '';
+
+  const _DescriptionTextField.readOnly({
+    required this.text,
+  }) : enabled = false;
 
   final bool enabled;
-  final String? text;
+  final String text;
 
   @override
   ConsumerState<_DescriptionTextField> createState() =>
@@ -321,9 +321,7 @@ class _DescriptionTextField extends StatefulHookConsumerWidget {
 class _DescriptionTextFieldState extends ConsumerState<_DescriptionTextField> {
   @override
   void initState() {
-    if (widget.text != null) {
-      ref.read(descriptionTextEditingController).text = widget.text!;
-    }
+    ref.read(descriptionTextEditingController).text = widget.text;
     super.initState();
   }
 
@@ -360,9 +358,7 @@ class _DeleteConfirmDialog extends StatelessWidget {
         height: 154,
         child: Column(
           children: [
-            const SizedBox(
-              height: 24,
-            ),
+            const Gap(24),
             SizedBox(
               height: 60,
               child: Center(
@@ -373,9 +369,7 @@ class _DeleteConfirmDialog extends StatelessWidget {
                 ),
               ),
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const Gap(20),
             Container(
               width: double.infinity,
               height: 1,
@@ -431,10 +425,10 @@ class _DeleteConfirmDialog extends StatelessWidget {
 
 class _ExpandedImage extends StatefulWidget {
   const _ExpandedImage({
-    required this.imageWidget,
+    required this.imageProvider,
   });
 
-  final ImageProvider imageWidget;
+  final ImageProvider imageProvider;
 
   @override
   State<_ExpandedImage> createState() => _ExpandedImageState();
@@ -460,7 +454,7 @@ class _ExpandedImageState extends State<_ExpandedImage> {
             Navigator.pop(context);
           },
           child: PhotoView(
-            imageProvider: widget.imageWidget,
+            imageProvider: widget.imageProvider,
           ),
         ),
       ),

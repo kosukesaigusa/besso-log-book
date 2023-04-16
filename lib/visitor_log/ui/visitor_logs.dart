@@ -99,13 +99,15 @@ class VisitorLogsPage extends ConsumerWidget {
                       itemCount: visitorLogs.length,
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         // デバイスの横幅でグリッドの列数を調整
-                        crossAxisCount: width < 600
+                        crossAxisCount: width <= 600
                             ? 2
                             : width <= 1000
                                 ? 3
                                 : width <= 1400
                                     ? 4
-                                    : 5,
+                                    : width <= 1800
+                                        ? 5
+                                        : 6,
                       ),
                       itemBuilder: (context, index) {
                         final log = visitorLogs[index];
@@ -135,7 +137,7 @@ class VisitorLogsPage extends ConsumerWidget {
                                       vertical: 12,
                                     ),
                                     child: Transform.rotate(
-                                      angle: _randomAngle(
+                                      angle: _getRandomAngle(
                                         min: -0.2,
                                         max: 0.2,
                                       ),
@@ -198,7 +200,8 @@ class VisitorLogsPage extends ConsumerWidget {
         );
   }
 
-  double _randomAngle({required double min, required double max}) {
+  /// 最小値~最大値までのランダムな値を取得する
+  double _getRandomAngle({required double min, required double max}) {
     final random = Random();
     return min + (random.nextDouble() * (max - min));
   }
