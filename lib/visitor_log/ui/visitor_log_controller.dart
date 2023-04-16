@@ -148,11 +148,14 @@ class VisitorLogController {
   }
 
   /// 指定した [VisitorLog] を削除する。
-  Future<void> delete({required VisitorLog visitorLog}) async {
+  Future<bool> delete({required VisitorLog visitorLog}) async {
     try {
+      _overlayLoadingController.update((state) => true);
       await _visitorLogService.delete(visitorLog: visitorLog);
+      return true;
     } on FirebaseException catch (e) {
       _scaffoldMessengerController.showSnackBarByFirebaseException(e);
+      return false;
     } finally {
       _overlayLoadingController.update((state) => false);
     }

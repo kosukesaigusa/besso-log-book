@@ -15,6 +15,7 @@ part 'visitor_log_dialog.freezed.dart';
 class VisitorLogDialogType with _$VisitorLogDialogType {
   const factory VisitorLogDialogType.read({required VisitorLog visitorLog}) =
       Read;
+
   const factory VisitorLogDialogType.create() = Create;
 }
 
@@ -54,6 +55,30 @@ class VisitorLogDialog extends ConsumerWidget {
                       _DescriptionTextField(
                         enabled: false,
                         text: visitorLog.description,
+                      ),
+                      Align(
+                        alignment: AlignmentDirectional.centerEnd,
+                        child: IconButton(
+                          onPressed: () async {
+                            await showDialog<void>(
+                              context: context,
+                              builder: (_) {
+                                return _DeleteConfirmDialog(
+                                  onConfirmed: () async {
+                                    final navigator = Navigator.of(context);
+                                    final isSucceeded = await ref
+                                        .read(visitorLogControllerProvider)
+                                        .delete(visitorLog: visitorLog);
+                                    if (isSucceeded) {
+                                      navigator.pop();
+                                    }
+                                  },
+                                );
+                              },
+                            );
+                          },
+                          icon: const Icon(Icons.delete),
+                        ),
                       ),
                     ],
                     create: () {
@@ -212,6 +237,90 @@ class _DescriptionTextFieldState extends ConsumerState<_DescriptionTextField> {
         fillColor: Colors.grey[200],
         border: InputBorder.none,
         filled: true,
+      ),
+    );
+  }
+}
+
+class _DeleteConfirmDialog extends StatelessWidget {
+  const _DeleteConfirmDialog({
+    required this.onConfirmed,
+  });
+
+  final VoidCallback onConfirmed;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      child: SizedBox(
+        width: min(MediaQuery.of(context).size.width, 440),
+        height: 154,
+        child: Column(
+          children: [
+            const SizedBox(
+              height: 24,
+            ),
+            SizedBox(
+              height: 60,
+              child: Center(
+                child: Text(
+                  '投稿を削除しますか？',
+                  style: Theme.of(context).textTheme.titleSmall,
+                  textAlign: TextAlign.center,
+                ),
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              width: double.infinity,
+              height: 1,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: double.infinity,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: TextButton(
+                      child: Text(
+                        'キャンセル',
+                        style: Theme.of(context)
+                            .textTheme
+                            .titleSmall!
+                            .copyWith(color: Colors.grey),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                    ),
+                  ),
+                  Container(
+                    width: 1,
+                    height: 48,
+                    color: Colors.grey,
+                  ),
+                  Expanded(
+                    child: TextButton(
+                      child: Text(
+                        '削除する',
+                        style: Theme.of(context).textTheme.titleSmall!.copyWith(
+                              color: Colors.red,
+                            ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        onConfirmed();
+                      },
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
+        ),
       ),
     );
   }
