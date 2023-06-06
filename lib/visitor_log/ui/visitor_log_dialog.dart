@@ -3,13 +3,13 @@ import 'dart:math';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutterfire_json_converters/flutterfire_json_converters.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:gap/gap.dart';
 import 'package:hooks_riverpod/hooks_riverpod.dart';
 import 'package:photo_view/photo_view.dart';
 
 import '../../firestore/firestore_models/visitor_log.dart';
-import '../../firestore/union_timestamp.dart';
 import '../../loading/ui/overlay_loading.dart';
 import '../../scaffold_messenger_controller.dart';
 import 'visitor_log_controller.dart';
@@ -248,7 +248,7 @@ class VisitorLogDialog extends ConsumerWidget {
     );
   }
 
-  String _toDateString(UnionTimestamp createdAt) {
+  String _toDateString(SealedTimestamp createdAt) {
     final dateTime = createdAt.dateTime;
     if (dateTime == null) {
       return '';

@@ -29,8 +29,6 @@ class VisitorLogsPage extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    debugPrint('width: ${MediaQuery.of(context).size.width},'
-        ' height: ${MediaQuery.of(context).size.height}');
     final width = MediaQuery.of(context).size.width;
 
     return ref.watch(visitorLogsStreamProvider).when(
