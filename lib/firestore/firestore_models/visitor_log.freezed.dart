@@ -24,8 +24,8 @@ mixin _$VisitorLog {
   String get visitorName => throw _privateConstructorUsedError;
   String get description => throw _privateConstructorUsedError;
   String get imageUrl => throw _privateConstructorUsedError;
-  @alwaysUseServerTimestampUnionTimestampConverter
-  UnionTimestamp get createdAt => throw _privateConstructorUsedError;
+  @alwaysUseServerTimestampSealedTimestampConverter
+  SealedTimestamp get createdAt => throw _privateConstructorUsedError;
 
   Map<String, dynamic> toJson() => throw _privateConstructorUsedError;
   @JsonKey(ignore: true)
@@ -44,10 +44,8 @@ abstract class $VisitorLogCopyWith<$Res> {
       String visitorName,
       String description,
       String imageUrl,
-      @alwaysUseServerTimestampUnionTimestampConverter
-          UnionTimestamp createdAt});
-
-  $UnionTimestampCopyWith<$Res> get createdAt;
+      @alwaysUseServerTimestampSealedTimestampConverter
+          SealedTimestamp createdAt});
 }
 
 /// @nodoc
@@ -89,16 +87,8 @@ class _$VisitorLogCopyWithImpl<$Res, $Val extends VisitorLog>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as UnionTimestamp,
+              as SealedTimestamp,
     ) as $Val);
-  }
-
-  @override
-  @pragma('vm:prefer-inline')
-  $UnionTimestampCopyWith<$Res> get createdAt {
-    return $UnionTimestampCopyWith<$Res>(_value.createdAt, (value) {
-      return _then(_value.copyWith(createdAt: value) as $Val);
-    });
   }
 }
 
@@ -115,11 +105,8 @@ abstract class _$$_VisitorLogCopyWith<$Res>
       String visitorName,
       String description,
       String imageUrl,
-      @alwaysUseServerTimestampUnionTimestampConverter
-          UnionTimestamp createdAt});
-
-  @override
-  $UnionTimestampCopyWith<$Res> get createdAt;
+      @alwaysUseServerTimestampSealedTimestampConverter
+          SealedTimestamp createdAt});
 }
 
 /// @nodoc
@@ -159,7 +146,7 @@ class __$$_VisitorLogCopyWithImpl<$Res>
       createdAt: null == createdAt
           ? _value.createdAt
           : createdAt // ignore: cast_nullable_to_non_nullable
-              as UnionTimestamp,
+              as SealedTimestamp,
     ));
   }
 }
@@ -172,8 +159,8 @@ class _$_VisitorLog extends _VisitorLog {
       this.visitorName = '',
       this.description = '',
       this.imageUrl = '',
-      @alwaysUseServerTimestampUnionTimestampConverter
-          this.createdAt = const UnionTimestamp.serverTimestamp()})
+      @alwaysUseServerTimestampSealedTimestampConverter
+          this.createdAt = const ServerTimestamp()})
       : super._();
 
   factory _$_VisitorLog.fromJson(Map<String, dynamic> json) =>
@@ -193,8 +180,8 @@ class _$_VisitorLog extends _VisitorLog {
   final String imageUrl;
   @override
   @JsonKey()
-  @alwaysUseServerTimestampUnionTimestampConverter
-  final UnionTimestamp createdAt;
+  @alwaysUseServerTimestampSealedTimestampConverter
+  final SealedTimestamp createdAt;
 
   @override
   String toString() {
@@ -243,8 +230,8 @@ abstract class _VisitorLog extends VisitorLog {
       final String visitorName,
       final String description,
       final String imageUrl,
-      @alwaysUseServerTimestampUnionTimestampConverter
-          final UnionTimestamp createdAt}) = _$_VisitorLog;
+      @alwaysUseServerTimestampSealedTimestampConverter
+          final SealedTimestamp createdAt}) = _$_VisitorLog;
   const _VisitorLog._() : super._();
 
   factory _VisitorLog.fromJson(Map<String, dynamic> json) =
@@ -259,8 +246,8 @@ abstract class _VisitorLog extends VisitorLog {
   @override
   String get imageUrl;
   @override
-  @alwaysUseServerTimestampUnionTimestampConverter
-  UnionTimestamp get createdAt;
+  @alwaysUseServerTimestampSealedTimestampConverter
+  SealedTimestamp get createdAt;
   @override
   @JsonKey(ignore: true)
   _$$_VisitorLogCopyWith<_$_VisitorLog> get copyWith =>

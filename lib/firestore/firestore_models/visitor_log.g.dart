@@ -13,8 +13,8 @@ _$_VisitorLog _$$_VisitorLogFromJson(Map<String, dynamic> json) =>
       description: json['description'] as String? ?? '',
       imageUrl: json['imageUrl'] as String? ?? '',
       createdAt: json['createdAt'] == null
-          ? const UnionTimestamp.serverTimestamp()
-          : alwaysUseServerTimestampUnionTimestampConverter
+          ? const ServerTimestamp()
+          : alwaysUseServerTimestampSealedTimestampConverter
               .fromJson(json['createdAt'] as Object),
     );
 
@@ -24,6 +24,6 @@ Map<String, dynamic> _$$_VisitorLogToJson(_$_VisitorLog instance) =>
       'visitorName': instance.visitorName,
       'description': instance.description,
       'imageUrl': instance.imageUrl,
-      'createdAt': alwaysUseServerTimestampUnionTimestampConverter
+      'createdAt': alwaysUseServerTimestampSealedTimestampConverter
           .toJson(instance.createdAt),
     };

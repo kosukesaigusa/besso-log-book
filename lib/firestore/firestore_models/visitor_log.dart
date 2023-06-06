@@ -1,7 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutterfire_json_converters/flutterfire_json_converters.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-
-import '../union_timestamp.dart';
 
 part 'visitor_log.freezed.dart';
 part 'visitor_log.g.dart';
@@ -13,9 +12,9 @@ class VisitorLog with _$VisitorLog {
     @Default('') String visitorName,
     @Default('') String description,
     @Default('') String imageUrl,
-    @alwaysUseServerTimestampUnionTimestampConverter
-    @Default(UnionTimestamp.serverTimestamp())
-        UnionTimestamp createdAt,
+    @alwaysUseServerTimestampSealedTimestampConverter
+    @Default(ServerTimestamp())
+    SealedTimestamp createdAt,
   }) = _VisitorLog;
 
   factory VisitorLog.fromJson(Map<String, dynamic> json) =>
