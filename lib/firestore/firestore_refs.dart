@@ -5,15 +5,12 @@ import 'firestore_models/visitor_log.dart';
 final _db = FirebaseFirestore.instance;
 
 /// visitorLogs コレクションの参照。
-final visitorLogsRef = _db.collection('visitorLogs').withConverter(
-  fromFirestore: (ds, _) {
-    return VisitorLog.fromDocumentSnapshot(ds);
-  },
-  toFirestore: (obj, _) {
-    final json = obj.toJson();
-    return json;
-  },
-);
+final visitorLogsRef = _db.collection('visitorLogs').withConverter<VisitorLog>(
+      fromFirestore: (ds, _) {
+        return VisitorLog.fromDocumentSnapshot(ds);
+      },
+      toFirestore: (obj, _) => obj.toJson(),
+    );
 
 /// visitorLog ドキュメントの参照。
 DocumentReference<VisitorLog> visitorLogRef({required String visitorLogId}) =>
